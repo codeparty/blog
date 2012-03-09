@@ -2,7 +2,7 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://codeparty.github.com/blog
+url: http://blog.derbyjs.com/
 title: Derby blog
 subtitle: "Full-stack MVC framework making it easy to write realtime, collaborative applications"
 author: Nate Smith and Brian Noguchi
@@ -16,7 +16,7 @@ description:
 date_format: "ordinal"
 
 # RSS / Email (optional) subscription links (change if using something like Feedburner)
-subscribe_rss: /blog/atom.xml
+subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
 email:
@@ -26,18 +26,18 @@ email:
 # ----------------------- #
 
 # If publishing to a subdirectory as in http://site.com/project set 'root: /project'
-root: /blog
-permalink: /blog/:year/:month/:day/:title/
+root: /
+permalink: /:year/:month/:day/:title/
 source: source
-destination: public/blog
+destination: public/
 plugins: plugins
 code_dir: downloads/code
-category_dir: blog/categories
+category_dir: /categories
 markdown: rdiscount
 pygments: false # default python pygments have been replaced by pygments.rb
 
 paginate: 10          # Posts per page on the blog index
-pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
+pagination_dir: /     # Directory base for pagination URLs eg. /blog/page/2/
 recent_posts: 5       # Posts in the sidebar Recent Posts section
 excerpt_link: "Read on &rarr;"  # "Continue reading" link text at the bottom of excerpted articles
 
@@ -58,7 +58,7 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/twitter.ht
 # ----------------------- #
 
 # Github repositories
-github_user: codeparty
+github_user:
 github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
