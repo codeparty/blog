@@ -2,7 +2,7 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://blog.derbyjs.com/
+url: http://codeparty.github.com/blog
 title: Derby blog
 subtitle: "Full-stack MVC framework making it easy to write realtime, collaborative applications"
 author: Nate Smith and Brian Noguchi
