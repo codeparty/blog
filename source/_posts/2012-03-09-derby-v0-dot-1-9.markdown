@@ -1,0 +1,86 @@
+---
+layout: post
+title: "Derby v0.1.9"
+date: 2012-03-09 10:31
+comments: true
+categories: release
+---
+
+The latest release of Derby includes easier installation without Redis; automatic reloading of scripts, templates, and styles; better subscription functionality; and lots of bug fixes.
+
+## Modularity FTW
+
+In preparation for adding persistent storage, we have finished a *major* refactor of Racer, the realtime model engine for Derby. The latest release includes the ability to plugin various functionality, and there will be separate plugins for different database, journal, and PubSub adapters. We already have preliminary plugins for a MongoDB database, Redis journal, and Redis PubSub, though we are still working on some bugs.
+
+Another awesome benefit of the refactor is that Redis is no longer required by default, and you can now start playing around with Derby after a simple `npm install -g derby`.
+
+## Command-S and kick back
+
+Thanks to [Up](https://github.com/LearnBoost/up) and Node.js v0.6's [`fs.watchFile`](http://nodejs.org/api/fs.html#fs_fs_watchfile_filename_options_listener), Derby now supports automatic page updates in development. Derby's new `derby.run` method starts a server via Up and reloads the server whenever any script files in the project are saved.
+
+``` javascript
+require('derby').run(__dirname + '/lib/server');
+```
+
+In development, the browser will automatically reload when it reconnects and notices that the server has a new version. Simply generate a new project via
+
+```
+$ derby new project-name
+```
+
+and it will be set up to use this feature.
+
+In addition, saving style files will automatically recompile CSS and update connected browsers. Saving template files will re-render the page in connected browsers. Get a big monitor and tweak those styles like it's nobody's business!
+
+## Subscribe -- now with less whack!
+
+The [`model.subscribe()`](http://derbyjs.com/#subscription) method has been simplified to take advantage of [scoped models](http://derbyjs.com/#scoped_models). Previously, the format for subscribe was the somewhat wacky:
+
+``` javascript
+// WARNING: Old API
+model.subscribe({_room: 'rooms.' + roomName}, function() {
+  console.log(model.get('_room.stuff'));
+});
+```
+
+The new format is more clear:
+
+``` javascript
+model.subscribe('rooms.' + roomName, function(err, room) {
+  model.ref('_room', room);
+  console.log(room.get('stuff'));
+});
+```
+
+There is also a new method `model.fetch()`, which has the same format as subscribe. However, it only gets data from the store and sets it in the model. It does not create any subscriptions to ongoing updates, and it does not require the use of PubSub.
+
+Subscribe and fetch will also support queries, though the implementation is still being finalized.
+
+## Seriously, we are going support MongoDB soon
+
+I know this has been a long time coming---persistence is just around the corner. We have it mostly working with the Todos example, but we are still working through some bugs. Note that adding persistence will simply require configuring the store in the server file. It will look something like:
+
+``` javascript
+// No persistence
+app.createStore({ listen: server });
+```
+
+``` javascript
+// Persistence-a-go-go
+
+derby
+  .use(require 'racer-journal-redis')
+  .use(require 'racer-pubsub-redis')
+  .use(require 'racer-db-mongo')
+
+app.createStore({
+  listen:  server
+, journal: {type: 'Redis'}
+, pubSub:  {type: 'Redis'}
+, db:      {type: 'Mongo', uri: 'mongodb://localhost/database'}
+});
+```
+
+It shouldn't require any changes to your application code, and it won't affect the model API, so go ahead and prototype with the current version of Derby.
+
+Note that if you try out this out now, bad things will happen. But hey, the code is on the Internet, so someone is obviously going to do it. Just know that it isn't supposed to work yet.
