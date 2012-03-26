@@ -19,7 +19,7 @@ Another awesome benefit of the refactor is that Redis is no longer required by d
 Thanks to [Up](https://github.com/LearnBoost/up) and Node.js v0.6's [`fs.watchFile`](http://nodejs.org/api/fs.html#fs_fs_watchfile_filename_options_listener), Derby now supports automatic page updates in development. Derby's new `derby.run` method starts a server via Up and reloads the server whenever any script files in the project are saved.
 
 ``` javascript
-require('derby').run(__dirname + '/lib/server');
+require('derby').run(__dirname + '/lib/server')
 ```
 
 In development, the browser will automatically reload when it reconnects and notices that the server has a new version. Simply generate a new project via
@@ -39,17 +39,17 @@ The [`model.subscribe()`](http://derbyjs.com/#subscription) method has been simp
 ``` javascript
 // WARNING: Old API
 model.subscribe({_room: 'rooms.' + roomName}, function() {
-  console.log(model.get('_room.stuff'));
-});
+  console.log(model.get('_room.stuff'))
+})
 ```
 
 The new format is more clear:
 
 ``` javascript
 model.subscribe('rooms.' + roomName, function(err, room) {
-  model.ref('_room', room);
-  console.log(room.get('stuff'));
-});
+  model.ref('_room', room)
+  console.log(room.get('stuff'))
+})
 ```
 
 There is also a new method `model.fetch()`, which has the same format as subscribe. However, it only gets data from the store and sets it in the model. It does not create any subscriptions to ongoing updates, and it does not require the use of PubSub.
@@ -62,23 +62,23 @@ I know this has been a long time coming---persistence is just around the corner.
 
 ``` javascript
 // No persistence
-app.createStore({ listen: server });
+app.createStore({ listen: server })
 ```
 
 ``` javascript
 // Persistence-a-go-go
 
 derby
-  .use(require 'racer-journal-redis')
-  .use(require 'racer-pubsub-redis')
-  .use(require 'racer-db-mongo')
+  .use(require('racer-journal-redis'))
+  .use(require('racer-pubsub-redis'))
+  .use(require('racer-db-mongo'))
 
 app.createStore({
   listen:  server
 , journal: {type: 'Redis'}
 , pubSub:  {type: 'Redis'}
 , db:      {type: 'Mongo', uri: 'mongodb://localhost/database'}
-});
+})
 ```
 
 It shouldn't require any changes to your application code, and it won't affect the model API, so go ahead and prototype with the current version of Derby.

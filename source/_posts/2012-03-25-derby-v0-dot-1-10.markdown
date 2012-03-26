@@ -1,0 +1,120 @@
+---
+layout: post
+title: "Derby v0.1.10"
+date: 2012-03-25 19:34
+comments: true
+categories: release
+---
+
+{% raw %}
+
+This release significantly improves templates and event bindings. It also fixes a ton of bugs, so get on it!
+
+## Namespaces to the rescue!
+
+Creating apps with many pages is now simple thanks to the addition of [namespaced templates](http://derbyjs.com/#importing_templates). The new template import syntax makes it easy to break up templates into multiple pages. Then, a namespace can be passed to `view.render()` to specify which page to render. Namespaces could also represent different application states or be used to break up really complex pages into multiple independent sets of templates.
+
+#### home.html
+``` html
+<Body:>
+  Welcome to the home page
+```
+
+#### contact.html
+``` html
+<Body:>
+  Give us a call sometime
+```
+
+#### index.html
+``` html
+<import: src="home">
+<import: src="contact">
+
+<Header:>
+  <h1>Awesome town</h1>
+```
+
+#### index.js
+``` javascript
+get('/', function(page) {
+  page.render('home')
+})
+
+get('/contact-us', function(page) {
+  page.render('contact')
+})
+```
+
+## Growing out the Mustache
+
+Derby templates have moved from [Mustache](http://mustache.github.com/mustache.5.html) style conditional blocks to [Handlebars](http://handlebarsjs.com/) style. This is a relatively minor change, but we think it makes templates more readable. This is helpful for those less familiar with Mustache syntax and for reading templates that others have written.
+
+What was previously:
+
+``` html
+<Body:>
+  {{#users}}
+    <h3>{{name}}</h3>
+    {{#active}}
+      Thanks for your active support!
+    {{^}}
+      We'd love to see you more often.
+    {{/}}
+  {{/}}
+```
+
+Now is written:
+
+``` html
+<Body:>
+  {{#each users}}
+    <h3>{{name}}</h3>
+    {{#if active}}
+      Thanks for your active support!
+    {{else}}
+      We'd love to see you more often.
+    {{/}}
+  {{/}}
+```
+
+For more detail, see [Template Syntax](http://derbyjs.com/#template_syntax) in the docs.
+
+## Event bubbling done right
+
+Derby makes [binding to DOM events](http://derbyjs.com/#dom_event_binding) fast and easy via the `x-bind` attribute in templates. Previously, events only were detected when they were the target. Now events bubble up to parent elements, and they emit the event object with a reference to the target as well as the element that was bound via `x-bind`.
+
+Unlike the [DOM Event Model](https://developer.mozilla.org/en/DOM/event), the event is only called on the first handler that matches. It will only continue bubbling if a `next()` function is called, similar to how routes can pass control to the next route. This is a more efficient and less error-prone way of bubbling than requiring listeners to call a method like `e.stopPropogation()`.
+
+``` html
+<!-- The root element will handle a click anywhere in the window. -->
+<Root:>
+  <html x-bind="click: deselect">
+
+<Body:>
+  {{#each items}}
+    <div x-bind="click: select">
+      <h3>{{name}}</h3>
+      <img src="{{image}}">
+    </div>
+  {{/}}
+```
+
+``` javascript
+exports.select = function(e, el, next) {
+  var id = model.at(el).get('id')
+  selectedId.set(id)
+}
+
+// There is no need to check the target of the click event, since it
+// will only bubble up if the click was outside of one of the items.
+exports.deselect = function() {
+  selectedId.del()
+}
+```
+
+## Even the error messages are fast
+
+For faster development, we added live-updating as files are edited in the last release. However, any errors would still kill the server and require a manual restart. Template and CSS error handling is now much improved, and errors with either of these are displayed in the browser as files are saved. Even better, the page updates and the error message disappears as soon as the error is corrected.
+
+{% endraw %}
