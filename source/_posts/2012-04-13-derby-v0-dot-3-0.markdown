@@ -1,0 +1,219 @@
+---
+layout: post
+title: "Derby v0.3.0"
+date: 2012-04-13 22:19
+comments: true
+categories: release
+---
+
+{% raw %}
+
+This is a big release for us---Derby finally has support for automatic persistence! Initially we have support for MongoDB, and it will be possible to swap in anything else through use of a different adapter.
+
+In addition, we have added support for subscriptions to queries and made big upgrades to the power of the HTML templates. Templates now support reactive helper functions, and we have replaced partials with more flexible HTML components.
+
+By the way, you may have noticed that we skipped v0.2. We are following the common convention `major.minor.patchlevel` where odd minor versions are unstable. Node.js, the Linux kernel, Redis, and lots of other projects follow this convention. Since odd minor versions are unstable, patch level versions will likely break APIs. Patch level updates to even numbered versions will only include bug fixes. The first such stable version will likely be v0.4.0.
+
+## Want some database with that realtime syncing?
+
+``` javascript
+// No persistence
+app.createStore({
+  listen: server
+})
+```
+
+``` javascript
+// Persistence-a-go-go
+derby.use(require('racer-db-mongo'))
+
+app.createStore({
+  listen:  server
+, db:      {type: 'Mongo', uri: 'mongodb://localhost/database'}
+})
+```
+
+No, seriously, it is two lines of code.
+
+All of the db adapters will be released as separate npm modules. As with all npm modules, you need to add a dependency to your `package.json` file and then re-run `$ npm install` in order to require it.
+
+### Behind the scenes
+
+Racer (the realtime engine powering Derby's models) describes all data mutations in terms of a method, path, and some arguments. These methods, e.g. `set`, `push`, etc., can be thought of like the HTTP verbs, such as `POST`, `PUT`, and `DELETE`. Model paths are like URLs to a specific piece of data, and the method arguments are like the content of a request. Just as a REST API can be defined in terms of HTTP verbs and URLs, Racer has a routing system for mutation methods and paths.
+
+By default, Racer uses a basic in-memory datastore that defines these store routes for each mutation method and path pattern. Database adapters like the Mongo adapter do the same thing, implementing each method in a database-specifc way. Because these routes can handle any method on any path, no additional server code needs to be written in order to persist data.
+
+It is possible to add custom store routes for specifc paths if an application connects to an external API. Such routes could be provided as a generic plugin for Racer that makes it dead simple for other developers to use an API with Racer's automatically synced models. More documentaion on store routes will be coming soon.
+
+### So where is the data saved?
+
+Racer paths are translated into database collections and documents using a natural mapping:
+
+``` text
+collection.documentId.document
+```
+
+All synced paths (anything that doesn't start with an underscore) must follow this convention. In other words, all model data stored at the first two path segments should be an object and not a string, number, or other primitive type.
+
+``` javascript
+// Examples:
+model.set('todos.id_0.completed', true)
+model.set('rooms.lobby.messages.5.text', 'Call me')
+model.set('meta', {
+  app: {
+    title: 'Hi there'
+  , author: 'Erik Mathers'
+  }
+})
+
+// The first and second segments in root paths must be objects
+model.set('title', 'Hi there')      // WARNING INVALID
+model.set('app.title', 'Hi there')  // WARNING INVALID
+
+// However, any type may be stored at any private path, which
+// starts with an underscore and is not synced back to the server
+model.set('_title', 'Hi there')     // OK
+```
+
+The document's id (the second path segment) is automatically added as the `id` property of the document, so that it can be retrieved from the datastore.
+
+``` javascript
+model.set('meta', {
+  app: {
+    title: 'Hi there'
+  , author: 'Erik Mathers'
+  }
+})
+console.log(model.get('meta.app'))
+// Logs: {
+//   id: 'app'
+// , title: 'Hi there'
+// , author: 'Erik Mathers'
+// }
+```
+
+## Queries --- we do 'em live!
+
+Racer has always had granular PubSub based on path patterns. In addition, it is now possible to specify subscriptions in terms of a more expressive query syntax. These queries are similar to most database queries, except that they can automatically detect when new data matches and then sync that data to all appropriate clients.
+
+``` javascript
+get('/:groupName', function(page, model, params) {
+  var groupPath = 'groups.' + params.groupName
+    , todosQuery = model.query('todos').where('group').equals(params.groupName)
+
+  model.subscribe(groupPath, todosQuery, function() {
+    ...
+  })
+})
+```
+
+In this example, a query is used to limit a client's subscription to only `todos` that have a property `group` with the same name as the current group. The query syntax supports most common query operations, such as key lookups, numerical comparisons, sorts, and limits. See [the documentation](http://derby.com/#queries) for more info.
+
+## A quick note on syntax changes
+
+This release changes a number of items in Derby's template syntax:
+
+* Bound template tags used to be wrapped in double or triple parentheses instead of curly braces. Instead, they are now wrapped in single curly braces. Now a bound variable looks like `<input value="{.text}">`. All of the parentheses started to get confusing with the addition of view helper functions, and the new syntax is much easier on the eyes. To output a left curly brace in HTML, use the entity `&#123;`. Conveniently, it's an easy one to remember.
+* Instead of triple curlies, there is now an unescaped keyword. For example, what was previously `{{{rawHtml}}}` is now `{{unescaped rawHtml}}` and what was previously `(((rawHtml)))` is now `{unescaped rawHtml}`. This is more readable and keeps the braces consistent.
+* Also for readability, path aliases in templates must now be proceeded by an `as` keyword. For example, `{{#each items as :item}}`.
+* Handlebars-style partials have been removed in favor of a more powerful component system that looks like custom HTML tags. More on this below, but what was previously `{{> nav}}` is now `<app:nav>`. Inside of HTML attribute values, developers should now use view helper functions instead of partials.
+* Triple curly braces have been re-purposed for the much more awesome function of macro template tags inside of components. More on this below.
+* The hacky `disabled="!((active))"` syntax that was previously supported only for boolean HTML attributes has been removed in favor of the built-in `not` helper function. This should now be `disabled="{not(active)}"`.
+
+We realize changes like this are annoying, and we don't expect to be making any more major changes to the template syntax after this. We have some additional features planned for components, but they should be backwards compatible with this current release.
+
+## Sometimes views need a little help(er)
+
+We follow the logic-less templating approach of Handlebars and Mustache, which helps to better organize controller code. However, we found that we kept having to add data to the model just for the purpose of binding computed values. This got tedious, and didn't work well with computed properties of each item in a list.
+
+Therefore, we added reactive view helper functions. These functions get evaluted when rendering as well as whenever their inputs change. In addition, they can work as both getters and setters. This is super useful when binding to form elements, such as selected options or radio buttons:
+
+``` js
+// Remove all whitespace from a string
+view.fn('unspace', function(value) {
+  return value && value.replace(/\s/g, '')
+})
+```
+
+``` html
+{{#with home}}
+  <h1 style="color:{unspace(.title.color)}">Welcome in {.title.color}!</h1>
+  <select>
+    {#each .colors}
+      <option selected="{equal(.name, home.title.color)}">{{.name}}</option>
+    {/}
+  </select>
+{{/}}
+```
+
+There are two default view helper functions, `equal` and `not`, that are aways available. It is also possible to define custom view helper functions, such as `unspace` in the example above. The `equal` and `not` functions can act as both getters and setters. In this example, when the page renders, the option with a name equal to the value of `home.title.color` will have a `selected` attribute and the others will not. When the user selects a different option from the drop down, `home.title.color` will be set to the value of the option that is now selected.
+
+## Components are the new <s>partials</s> hotness
+
+Previously, Derby templates only supported simple partials like Handlebars. We have replaced partials with a much more powerful concept of components that can take attribute arguments and even different HTML content. Components are defined in the same way that partials were previously defined, but they are included in other templates like custom HTML tags. When Derby parses the templates, it replaces these custom component tags with the components' contents, and the custom tags do not appear in the HTML output.
+
+``` html
+<Body:>
+  <h1><app:greeting></h1>
+
+<greeting:>
+  Hello!
+```
+
+For now, all component includes start with the namespace `app`. This prevents potential conflicts with normal HTML tags, and it makes it clear which HTML tags are components that should be replaced. In the future, it will be possible to define component libraries with their own namespaces.
+
+Literal values or variable values can be passed to components. These component attributes are available through "macro" template tags, which have triple curly braces. Macro template tags only reference component attribute names, and regular template tags (with one or two curly braces) only reference names from the model or context object. It is possible to use macro template tags to conditionally render any HTML content or other template tags. 
+
+``` html
+<Body:>
+  <h1><app:greeting message="Hello" to="{_user.name}"></h1>
+
+<greeting:>
+  {{{#if to}}}
+    {{{message}}}, {{{to}}}!
+  {{{else}}}
+    {{{message}}}!
+  {{{/}}}
+```
+
+produces the same output as:
+
+``` html
+<Body:>
+  <h1>
+    {#if _user.name}
+      Hello, {_user.name}!
+    {else}
+      Hello!
+    {/}
+  </h1>
+```
+
+By default, all components are void HTML elements. This means that they must only have an opening tag and no closing tag, just like the `<img>` and `<br>` elements. A component can be defined as nonvoid, which means that it must have both a starting and a closing tag. Nonvoid components have access to a special `content` macro that makes it possible to pass HTML content to the component. For example:
+
+``` html
+<Body:>
+  Welcome!
+  <app:fancyButton>
+    <b>Click me {{#if isUrgent}}now!{{/}}</b>
+  </app:fancyButton>
+
+<fancyButton: nonvoid>
+  <button class="fancy">
+    {{{content}}}
+  </button>
+```
+
+produces the same output as:
+
+``` html
+<Body:>
+  Welcome!
+  <button class="fancy">
+    <b>Click me {{#if isUrgent}}now!{{/}}</b>
+  </button>
+```
+
+Components make it possible to write more expressive templates and reduce repeated boilerplate. We will continue to extend components and add support for creating reusable component libraries.
+
+{% endraw %}
