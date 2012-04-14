@@ -107,7 +107,7 @@ get('/:groupName', function(page, model, params) {
 })
 ```
 
-In this example, a query is used to limit a client's subscription to only `todos` that have a property `group` with the same name as the current group. The query syntax supports most common query operations, such as key lookups, numerical comparisons, sorts, and limits. See [the documentation](http://derby.com/#queries) for more info.
+In this example, a query is used to limit a client's subscription to only `todos` that have a property `group` with the same name as the current group. The query syntax supports most common query operations, such as key lookups, numerical comparisons, sorts, and limits. See [the documentation](http://derbyjs.com/#queries) for more info.
 
 ## A quick note on syntax changes
 
