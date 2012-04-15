@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-We have received a number of requests for a comparison. I'd like to thank [Nick Retallack](http://nickretallack.com/), who already did a great job sumarizing a lot of these points on our [Google Group](http://groups.google.com/group/derbyjs). Many of his observations are included here.
+We have received a number of requests for a comparison. I'd like to thank [Nick Retallack](http://nickretallack.com/), who already did a great job summarizing a lot of these points on our [Google Group](http://groups.google.com/group/derbyjs). Many of his observations are included here.
 
 ## A bit of the origin story
 
@@ -18,7 +18,7 @@ Brian and I first discussed this vision with each other a year ago. I was coming
 
 ## The Holy Grail: server and client code sharing
 
-From Google Search, I learned that in order to have a responsive web app, it is critical to both render pages on the server and in the browser. Google can afford to do this, because it has so many engineers and speed is of paramount importance to search. To acheive fast page loads as well as fast page updates, Google implements pretty much the entire Search front-end in C++ as well as JavaScript. They have been working on a number of projects to make this easier over the past couple of years, but needless to say, such a process is too expensive and slow for a startup or a complex app.
+From Google Search, I learned that in order to have a responsive web app, it is critical to both render pages on the server and in the browser. Google can afford to do this, because it has so many engineers and speed is of paramount importance to search. To achieve fast page loads as well as fast page updates, Google implements pretty much the entire Search front-end in C++ as well as JavaScript. They have been working on a number of projects to make this easier over the past couple of years, but needless to say, such a process is too expensive and slow for a startup or a complex app.
 
 Gmail, Twitter, and other sites rendered only in the client were painfully slow to load. Twitter went through the full circle on this---they started as a server-rendered Rails app, rewrote to render [everything in the client](http://engineering.twitter.com/2010/09/tech-behind-new-twittercom.html), and then realized it took their users 4 seconds to be able to read a 140 character message. Now, Twitter renders half the page in Scala on the server, and they render the other half in JavaScript in the client. This both makes it more difficult for them to maintain a code base in multiple languages and means that the least important items on the page pop-in a few seconds after page load. People are very sensitive to movement, so in effect, they are distracting their users with the least important information after every page load.
 
@@ -30,7 +30,7 @@ So after all that, our teams decided to go in similar directions in some ways, b
 
 ### GPL vs. MIT
 
-Currently, Meteor is only available under a [GPL licence](http://meteor.com/faq/how-is-meteor-licensed). This means that you must contact them and arrange for a commerial license if you do not wish to release your source under the GPL or another compatible license.
+Currently, Meteor is only available under a [GPL license](http://meteor.com/faq/how-is-meteor-licensed). This means that you must contact them and arrange for a commercial license if you do not wish to release your source under the GPL or another compatible license.
 
 Derby, Racer, and all other components of our framework are released under the permissive MIT license. Thus, you can do pretty much anything you want with it (other than sue us), and we can't stop you or change our minds later.
 
@@ -62,13 +62,13 @@ Derby also uses popular modules at its core, especially [Express](http://express
 
 ### MongoDB API vs. Racer methods
 
-Meteor takes the MongoDB API all the way to the browser. The MongoDB API is powerful and easy to use from JavaScript. It has also been around for some time, so there are well established patterns for using it do most things that an application might need to do. A lot of people seem to think this is a fun way to build apps, and it reduces need to understand multiple layers of abstraction. Some have expressed concerns over the security implications, but I think we should reserve judgement until the Meteor team has more time to address what they think is the best approach for authentication and authorization.
+Meteor takes the MongoDB API all the way to the browser. The MongoDB API is powerful and easy to use from JavaScript. It has also been around for some time, so there are well established patterns for using it do most things that an application might need to do. A lot of people seem to think this is a fun way to build apps, and it reduces need to understand multiple layers of abstraction. Some have expressed concerns over the security implications, but I think we should reserve judgment until the Meteor team has more time to address what they think is the best approach for authentication and authorization.
 
 Racer has its own API based around a set of mutator methods and paths. This API maps pretty much 1:1 with any document store, including MongoDB. This has some pluses and minuses, but we believe it is the right choice for a few reasons:
 
 * First, our paths and methods are granular enough to take advantage of the capabilities of most datastores, but it is possible to switch from one datastore to another or to use them with multiple datastores simultaneously. Swapping in Riak, Postgres, CouchDB, or another service should be straightforward without modifying application code.
 
-* Paths map well to PubSub, which is how we propogate changes in realtime. In contrast, Meteor's LiveMongo implementation simply writes to the database and polls it frequently for the data in use by every connected client. The advantage to polling is that it can support subscriptions to pretty much any kind of Mongo query, but we have implemented most queries and query PubSub without needing to poll the database. We have no real-world evidence yet, but we expect PubSub to scale much better than database polling.
+* Paths map well to PubSub, which is how we propagate changes in realtime. In contrast, Meteor's LiveMongo implementation simply writes to the database and polls it frequently for the data in use by every connected client. The advantage to polling is that it can support subscriptions to pretty much any kind of Mongo query, but we have implemented most queries and query PubSub without needing to poll the database. We have no real-world evidence yet, but we expect PubSub to scale much better than database polling.
 
 * Paths and methods also map well to conflict detection techniques that we think will be one of the major benefits of using Racer. For now, our default mode is last-writer-wins, which is equivalent to how Meteor saves data. However, we have preliminary implementations of conflict resolution via Software Transactional Memory and Operational Transformation methods. Such techniques will make it possible to use a Derby app offline and then resync correctly. It will also make it possible to easily add features like Google-Docs-style realtime collaborative text editing in any text box.
 
@@ -84,7 +84,7 @@ In addition, server-rendering is critical for search engine optimization, and it
 
 Derby exposes [routes](http://derbyjs.com/#routes) as an Express middleware on the server, so you can use it alongside other server-only Express routes for tasks like uploading files, and you can even write multiple apps that handle different sets of routes on the same Express server. For example, you might write a separate admin app or a separate mobile app that doesn't load all of the code for a desktop browser app.
 
-While Derby gives you all of the speed and accessiblity advantages of a more traditional multi-page app, it also creates fully optimized single-page applications that can render any template or route in the browser. Client-side routes simply render any links that they can without doing a page refresh; you don't have to call methods on a special browser-side routing API. Just put a normal HTML link on the page, and Derby will render it client-side.
+While Derby gives you all of the speed and accessibility advantages of a more traditional multi-page app, it also creates fully optimized single-page applications that can render any template or route in the browser. Client-side routes simply render any links that they can without doing a page refresh; you don't have to call methods on a special browser-side routing API. Just put a normal HTML link on the page, and Derby will render it client-side.
 
 Meteor does not have these features yet, though they recently rewrote their templating engine to use strings so that it is now [possible for them to add](http://meteor.com/faq/can-meteor-serve-static-html).
 
@@ -92,7 +92,7 @@ Meteor does not have these features yet, though they recently rewrote their temp
 
 Meteor uses a reactive functional programming approach to updating templates that could potentially work with any template engine. As a template is rendered, all of the data that is used to render that template is assumed to be an input to that chunk of the UI. Later, when that data changes, the template is re-rendered, and its output is compared with the DOM. Meteor then patches up the DOM to apply the minimum required changes. Effectively, every single variable and function in a template is bound. The big advantage to this approach is its simplicity and ability to support any template language.
 
-In contrast, Derby has its own template language based on Handlebars. [Bindings](http://derbyjs.com/#bindings) are declared explictly, and the HTML of the template is parsed in order to figure out which parts of the DOM need to be updated. Unlike Meteor's, Derby's bindings are two way; when form elements are bound, the model is automatically updated as users type in text inputs, check checkboxes, and select items in drop downs. In addition, it is possible to bind everything or to optimize the performance of templates by only binding what is neccessary. Outputting non-bound data may also be preffered if a developer wishes to update the view via manual DOM manipulation in special cases.
+In contrast, Derby has its own template language based on Handlebars. [Bindings](http://derbyjs.com/#bindings) are declared explicitly, and the HTML of the template is parsed in order to figure out which parts of the DOM need to be updated. Unlike Meteor's, Derby's bindings are two way; when form elements are bound, the model is automatically updated as users type in text inputs, check checkboxes, and select items in drop downs. In addition, it is possible to bind everything or to optimize the performance of templates by only binding what is necessary. Outputting non-bound data may also be preferred if a developer wishes to update the view via manual DOM manipulation in special cases.
 
 ### DOM event handlers
 
@@ -110,7 +110,7 @@ This is very contentious issue at the moment, and we prefer to stay out of it. A
 
 ## Wrapping it up
 
-You can acheive many of the same things with both frameworks. Both are powerful tools for implementing features that are very difficult to write in more traditional web frameworks like Rails and PHP.
+You can achieve many of the same things with both frameworks. Both are powerful tools for implementing features that are very difficult to write in more traditional web frameworks like Rails and PHP.
 
 Derby has been more focused on making sure it can support advanced features like conflict detection, offline clients, and extremely fast rendering. We are also more focused on compatibility with other modules in the existing Node.js ecosystem, and we have a permissive open source license.
 
