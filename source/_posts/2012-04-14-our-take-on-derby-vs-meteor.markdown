@@ -66,13 +66,21 @@ Meteor takes the MongoDB API all the way to the browser. The MongoDB API is powe
 
 Racer has its own API based around a set of mutator methods and paths. This API maps pretty much 1:1 with any document store, including MongoDB. This has some pluses and minuses, but we believe it is the right choice for a few reasons:
 
-* First, our paths and methods are granular enough to take advantage of the capabilities of most datastores, but it is possible to **switch from one datastore to another** or to use them with multiple datastores simultaneously. Swapping in Riak, Postgres, CouchDB, or another service should be straightforward without modifying application code.
+#### Conflict resolution
 
-* Paths **map well to PubSub**, which is how we propagate changes in realtime. In contrast, Meteor's LiveMongo implementation simply writes to the database and polls it frequently for the data in use by every connected client. The advantage to polling is that it can support subscriptions to pretty much any kind of Mongo query, but we have implemented most queries and query PubSub without needing to poll the database. We have no real-world evidence yet, but we expect PubSub to scale much better than database polling.
+Paths and methods map well to conflict detection techniques that we think will be one of the major benefits of using Racer. For now, our default mode is last-writer-wins, which is equivalent to how Meteor saves data. However, we have preliminary implementations of conflict resolution via Software Transactional Memory and Operational Transformation methods. Such techniques will make it possible to use a Derby app offline and then resync correctly. It will also make it possible to easily add features like Google-Docs-style realtime collaborative text editing in any text box.
 
-* Paths and methods also map well to **conflict detection** techniques that we think will be one of the major benefits of using Racer. For now, our default mode is last-writer-wins, which is equivalent to how Meteor saves data. However, we have preliminary implementations of conflict resolution via Software Transactional Memory and Operational Transformation methods. Such techniques will make it possible to use a Derby app offline and then resync correctly. It will also make it possible to easily add features like Google-Docs-style realtime collaborative text editing in any text box.
+#### Datastore portability
 
-* It will be possible to create **plugins that act like datastores**, even though they are communicating with a backend service or a 3rd party API. Database adapters are built on top of a system of routes that can be used in a custom manner.
+Our paths and methods are granular enough to take advantage of the capabilities of most datastores, but it is possible to switch from one datastore to another or to use them with multiple datastores simultaneously. Swapping in Riak, Postgres, CouchDB, or another service should be straightforward without modifying application code.
+
+#### Efficient PubSub
+
+Paths map well to PubSub, which is how we propagate changes in realtime. In contrast, Meteor's LiveMongo implementation simply writes to the database and polls it frequently for the data in use by every connected client. The advantage to polling is that it can support subscriptions to pretty much any kind of Mongo query, but we have implemented most queries and query PubSub without needing to poll the database. We have no real-world evidence yet, but we expect PubSub to scale much better than database polling.
+
+#### API plugins
+
+It will be possible to create plugins that act like datastores, even though they are communicating with a backend service or a 3rd party API. Database adapters are built on top of a system of routes that can be used in a custom manner.
 
 ### Server rendering and shared routes
 
