@@ -1,0 +1,25 @@
+---
+layout: post
+title: "Derby v0.3.1"
+date: 2012-04-19 18:22
+comments: true
+categories: release
+---
+
+{% raw %}
+
+Derby v0.3.1 is out with support for LESS compilation, Express 3, easier to install examples, and a number of bug fixes.
+
+## LESS
+
+Thanks to contributions from [Zach Smith](https://github.com/xcoderzach), Derby will now compile styles written in LESS as well as Stylus! We're super excited to have new contributors, and it is great to see people using and improving upon the framework!
+
+## Express 3
+
+We have updated Derby to use [Express 3](http://tjholowaychuk.com/post/21162751096/express-3-0-0-alpha1), which has recently been released in alpha. Express 3 is different in a number of small ways, so we wanted to get new projects started with the current APIs as soon as possible.
+
+## Easier to get examples installed
+
+A number of people ran into issues running the derby examples on their machines, because of how they were included. They are now in a separate [GitHub repo](https://github.com/codeparty/derby-examples) with much better installation instructions. Hopefully we have resolved all of the issues running Derby on Windows as well.
+
+{% endraw %}

@@ -125,3 +125,5 @@ You can achieve many of the same things with both frameworks. Both are powerful 
 Derby has been more focused on making sure it can support advanced features like conflict detection, offline clients, and extremely fast rendering. We are also more focused on compatibility with other modules in the existing Node.js ecosystem, and we have a permissive open source license.
 
 Ultimately, we are all trying to create the best tools for developers, and competition can help to breed innovation. We are happy to see other approaches like [Meteor](http://meteor.com/), [SpaceMagic](http://spacemagic.io/), and [Firebase](http://www.firebase.com/), because we will all learn from each other. We will end up with better tools, a better web, and better experiences for users.
+
+If you're interested in what we're working on, follow us on [Twitter](https://twitter.com/#!/derbyjs) and [GitHub](https://github.com/codeparty/derby/).
