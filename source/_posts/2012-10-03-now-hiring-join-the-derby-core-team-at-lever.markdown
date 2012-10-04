@@ -18,7 +18,7 @@ Lever’s culture is rooted in pairing technology innovation with user-driven de
 
 ## Sweet office in downtown San Francisco
 
-We are located in our pilot customer’s office near Civic Center in San Francisco. In addition to the best user feedback a team could ask for, we also get three free meals a day, free snacks, an office full of talented engineers and designers to learn from, and a spectacular roof deck.
+We are located in our pilot customer’s office in San Francisco. In addition to the best user feedback a team could ask for, we also get three free meals a day, free snacks, an office full of talented engineers and designers to learn from, and a spectacular roof deck.
 
 ## Learn a ton, and build a fantastic company
 
