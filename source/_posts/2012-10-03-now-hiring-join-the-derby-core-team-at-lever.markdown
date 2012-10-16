@@ -22,7 +22,7 @@ We are located in our pilot customer’s office in San Francisco. In addition to
 
 ## Learn a ton, and build a fantastic company
 
-As on of the very first hires at Lever, you will take a defining role in the company. You will have flexibility to contribute across the technology stack.
+As one of the very first hires at Lever, you will take a defining role in the company. You will have flexibility to contribute across the technology stack.
 
 * Design and implement a wide variety of product features
 * Be a primary contributor to Derby, Racer, and other open source projects
