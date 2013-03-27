@@ -42,7 +42,7 @@ Racer will sit on top of ShareJS. ShareJS will provide the database layer, commu
   - Moving to a collection/document view instead of a flat set of documents.
   - Support for live database queries.
 
-You can see a much more detailed description of the backend changes to ShareJS on [Joseph's blog](http://josephg.com/post/45724165226/its-time-to-rewrite-sharejs).
+You can find a much more detailed description of the backend changes to ShareJS on [Joseph's blog](http://josephg.com/post/45724165226/its-time-to-rewrite-sharejs).
 
 These changes will be implemented in a bottom-up manner, so the changes to Racer will land last. In the meantime, we have been fixing bugs as they come up, but much of the current code is going to be removed or completely replaced over the next few months.
 
