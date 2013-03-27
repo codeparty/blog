@@ -4,7 +4,7 @@
   <title><![CDATA[Derby blog]]></title>
   <link href="http://blog.derbyjs.com//atom.xml" rel="self"/>
   <link href="http://blog.derbyjs.com//"/>
-  <updated>2013-03-26T23:07:47-07:00</updated>
+  <updated>2013-03-26T23:09:33-07:00</updated>
   <id>http://blog.derbyjs.com//</id>
   <author>
     <name><![CDATA[Nate Smith and Brian Noguchi]]></name>
@@ -38,7 +38,7 @@
 
 <h2>Establishing a solid foundation</h2>
 
-<p>As with most new projects, we couldn&#8217;t foresee everything that would and wouldn&#8217;t work well. We wrote a whole lot of features and came up with a many new concepts as we created Racer and Derby. Many of these new ideas are fantastic, and many of them didn&#8217;t work well or made the implementation too complex. We also didn&#8217;t write the current code to scale across multiple processes, since our focus was on innovating at the API level.</p>
+<p>As with most new projects, we couldn&#8217;t foresee everything that would and wouldn&#8217;t work well. We wrote a whole lot of features and came up with a many new concepts as we created Racer and Derby. Many of these new ideas were fantastic, and many of them didn&#8217;t work well or made the implementation too complex. We also didn&#8217;t write the first version of the code to scale across multiple processes, since our focus was on innovating at the API level.</p>
 
 <p>The next step in our development is simplifying down to the good ideas and making a horizontally scalable system. At the same time, we will be coordinating our work on ShareJS and Racer to better both projects.</p>
 
