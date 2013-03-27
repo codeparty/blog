@@ -4,7 +4,7 @@
   <title><![CDATA[Derby blog]]></title>
   <link href="http://blog.derbyjs.com//atom.xml" rel="self"/>
   <link href="http://blog.derbyjs.com//"/>
-  <updated>2013-03-26T23:09:33-07:00</updated>
+  <updated>2013-03-26T23:14:14-07:00</updated>
   <id>http://blog.derbyjs.com//</id>
   <author>
     <name><![CDATA[Nate Smith and Brian Noguchi]]></name>
@@ -57,7 +57,7 @@
 </ul>
 
 
-<p>You can see a much more detailed description of the backend changes to ShareJS on <a href="http://josephg.com/post/45724165226/its-time-to-rewrite-sharejs">Joseph&#8217;s blog</a>.</p>
+<p>You can find a much more detailed description of the backend changes to ShareJS on <a href="http://josephg.com/post/45724165226/its-time-to-rewrite-sharejs">Joseph&#8217;s blog</a>.</p>
 
 <p>These changes will be implemented in a bottom-up manner, so the changes to Racer will land last. In the meantime, we have been fixing bugs as they come up, but much of the current code is going to be removed or completely replaced over the next few months.</p>
 
