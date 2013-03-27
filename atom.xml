@@ -4,7 +4,7 @@
   <title><![CDATA[Derby blog]]></title>
   <link href="http://blog.derbyjs.com//atom.xml" rel="self"/>
   <link href="http://blog.derbyjs.com//"/>
-  <updated>2013-03-26T20:53:42-07:00</updated>
+  <updated>2013-03-26T23:04:40-07:00</updated>
   <id>http://blog.derbyjs.com//</id>
   <author>
     <name><![CDATA[Nate Smith and Brian Noguchi]]></name>
@@ -18,7 +18,7 @@
     <link href="http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time/"/>
     <updated>2013-03-26T12:41:00-07:00</updated>
     <id>http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time</id>
-    <content type="html"><![CDATA[<p>At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that is a bug. In addition, we believe that web apps shouldn&#8217;t feel inferior to their desktop or mobile counterparts&mdash;they should load super fast, respond to interaction instantly, and work offline without interruption.</p>
+    <content type="html"><![CDATA[<p>At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that is a bug. In addition, we believe that web apps shouldn&#8217;t feel inferior to their desktop or mobile counterparts&mdash;they should load super quickly, respond to interaction instantly, and work offline without interruption.</p>
 
 <p>We are creating Derby and Racer, intending to build the best technology to power the next generation of innovative web applications. We also aim to make their development accessible for individual developers, startups, and large teams.</p>
 
