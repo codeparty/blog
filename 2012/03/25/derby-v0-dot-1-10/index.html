@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Derby v0.1.10 - Derby blog</title>
+  <meta name="author" content="Nate Smith and Brian Noguchi">
+
+  
+  <meta name="description" content="This release significantly improves templates and event bindings. It also fixes a ton of bugs, so get on it! Namespaces to the rescue! Creating apps &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Derby blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+  article > footer { padding-bottom: 0 }
+</style>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26625318-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Derby blog</a></h1>
+  
+    <h2>Full-stack MVC framework making it easy to write realtime, collaborative applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.derbyjs.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="http://derbyjs.com/">derbyjs.com</a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="https://github.com/codeparty/derby">Github</a></li>
+  <li><a href="http://twitter.com/derbyjs">Twitter</a></li>
+  <li><a href="http://groups.google.com/group/derbyjs">Google Groups</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Derby v0.1.10</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-25T19:34:00-07:00" pubdate data-updated="true">Mar 25<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This release significantly improves templates and event bindings. It also fixes a ton of bugs, so get on it!</p>
+
+<h2>Namespaces to the rescue!</h2>
+
+<p>Creating apps with many pages is now simple thanks to the addition of <a href="http://derbyjs.com/#importing_templates">namespaced templates</a>. The new template import syntax makes it easy to break up templates into multiple pages. Then, a namespace can be passed to <code>view.render()</code> to specify which page to render. Namespaces could also represent different application states or be used to break up really complex pages into multiple independent sets of templates.</p>
+
+<h4>home.html</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  Welcome to the home page
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>contact.html</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  Give us a call sometime
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>index.html</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;import:</span> <span class="na">src=</span><span class="s">&quot;home&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;import:</span> <span class="na">src=</span><span class="s">&quot;contact&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;Header:&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>Awesome town<span class="nt">&lt;/h1&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>index.js</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">page</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/contact-us&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">page</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;contact&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Growing out the Mustache</h2>
+
+<p>Derby templates have moved from <a href="http://mustache.github.com/mustache.5.html">Mustache</a> style conditional blocks to <a href="http://handlebarsjs.com/">Handlebars</a> style. This is a relatively minor change, but we think it makes templates more readable. This is helpful for those less familiar with Mustache syntax and for reading templates that others have written.</p>
+
+<p>What was previously:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  {{#users}}
+</span><span class='line'>    <span class="nt">&lt;h3&gt;</span>{{name}}<span class="nt">&lt;/h3&gt;</span>
+</span><span class='line'>    {{#active}}
+</span><span class='line'>      Thanks for your active support!
+</span><span class='line'>    {{^}}
+</span><span class='line'>      We&#39;d love to see you more often.
+</span><span class='line'>    {{/}}
+</span><span class='line'>  {{/}}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now is written:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  {{#each users}}
+</span><span class='line'>    <span class="nt">&lt;h3&gt;</span>{{name}}<span class="nt">&lt;/h3&gt;</span>
+</span><span class='line'>    {{#if active}}
+</span><span class='line'>      Thanks for your active support!
+</span><span class='line'>    {{else}}
+</span><span class='line'>      We&#39;d love to see you more often.
+</span><span class='line'>    {{/}}
+</span><span class='line'>  {{/}}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For more detail, see <a href="http://derbyjs.com/#template_syntax">Template Syntax</a> in the docs.</p>
+
+<h2>Event bubbling done right</h2>
+
+<p>Derby makes <a href="http://derbyjs.com/#dom_event_binding">binding to DOM events</a> fast and easy via the <code>x-bind</code> attribute in templates. Previously, events only were detected when they were the target. Now events bubble up to parent elements, and they emit the event object with a reference to the target as well as the element that was bound via <code>x-bind</code>.</p>
+
+<p>Unlike the <a href="https://developer.mozilla.org/en/DOM/event">DOM Event Model</a>, the event is only called on the first handler that matches. It will only continue bubbling if a <code>next()</code> function is called, similar to how routes can pass control to the next route. This is a more efficient and less error-prone way of bubbling than requiring listeners to call a method like <code>e.stopPropogation()</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="c">&lt;!-- The root element will handle a click anywhere in the window. --&gt;</span>
+</span><span class='line'><span class="nt">&lt;Root:&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;html</span> <span class="na">x-bind=</span><span class="s">&quot;click: deselect&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  {{#each items}}
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">x-bind=</span><span class="s">&quot;click: select&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;h3&gt;</span>{{name}}<span class="nt">&lt;/h3&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;{{image}}&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>  {{/}}
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">select</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">el</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="nx">el</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">selectedId</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// There is no need to check the target of the click event, since it</span>
+</span><span class='line'><span class="c1">// will only bubble up if the click was outside of one of the items.</span>
+</span><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">deselect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">selectedId</span><span class="p">.</span><span class="nx">del</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Even the error messages are fast</h2>
+
+<p>For faster development, we added live-updating as files are edited in the last release. However, any errors would still kill the server and require a manual restart. Template and CSS error handling is now much improved, and errors with either of these are displayed in the browser as files are saved. Even better, the page updates and the error message disappears as soon as the error is corrected.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nate Smith and Brian Noguchi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-25T19:34:00-07:00" pubdate data-updated="true">Mar 25<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='//categories/release/'>release</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10/" data-via="derbyjs" data-counturl="http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/03/09/derby-v0-dot-1-9/" title="Previous Post: Derby v0.1.9">&laquo; Derby v0.1.9</a>
+      
+      
+        <a class="basic-alignment right" href="/2012/04/13/derby-v0-dot-3-0/" title="Next Post: Derby v0.3.0">Derby v0.3.0 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/03/26/getting-derby-ready-for-prime-time/">Getting Derby ready for prime time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/">Now hiring: Join the Derby core team at Lever</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/19/derby-v0-dot-3-1/">Derby v0.3.1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/14/our-take-on-derby-vs-meteor/">Our take on Derby vs. Meteor</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/13/derby-v0-dot-3-0/">Derby v0.3.0</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("derbyjs", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/derbyjs" class="twitter-follow-button" data-show-count="false">Follow @derbyjs</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nate Smith and Brian Noguchi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'derbyblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10/';
+        var disqus_url = 'http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

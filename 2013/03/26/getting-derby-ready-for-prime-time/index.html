@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Getting Derby ready for prime time - Derby blog</title>
+  <meta name="author" content="Nate Smith and Brian Noguchi">
+
+  
+  <meta name="description" content="At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Derby blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+  article > footer { padding-bottom: 0 }
+</style>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26625318-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Derby blog</a></h1>
+  
+    <h2>Full-stack MVC framework making it easy to write realtime, collaborative applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.derbyjs.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="http://derbyjs.com/">derbyjs.com</a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="https://github.com/codeparty/derby">Github</a></li>
+  <li><a href="http://twitter.com/derbyjs">Twitter</a></li>
+  <li><a href="http://groups.google.com/group/derbyjs">Google Groups</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Getting Derby ready for prime time</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-26T12:41:00-07:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that is a bug. In addition, we believe that web apps shouldn&#8217;t feel inferior to their desktop or mobile counterparts&mdash;they should load super fast, respond to interaction instantly, and work offline without interruption.</p>
+
+<p>We are creating Derby and Racer, intending to build the best technology to power the next generation of innovative web applications. We also aim to make their development accessible for individual developers, startups, and large teams.</p>
+
+<h2>Welcome, Joseph!</h2>
+
+<p>We&#8217;ll get back to our plan for achieving these ambitious goals, but first want to introduce <a href="http://josephg.com">Jospeh Gentle</a>, who recently joined the Lever team. Joseph has already built <a href="http://sharejs.org/">ShareJS</a>, perhaps the easiest open source library for adding Operational Transformation (OT) to a web app. OT is a method for enabling collaborative text editing and other forms of collaborative editing. Similar algorithms power Google Docs, Google Wave, Etherpad, and a handful of other advanced applications. Joseph was also previously a member of the Google Wave team, and is leading development of the next generation of our realtime infrastructure.</p>
+
+<h2>In case you haven&#8217;t been following along yet</h2>
+
+<p>Looking at the landscape of web frameworks and libraries a couple of years ago, we realized that while more and more applications were integrating realtime features, developer options were lacking.</p>
+
+<p>We started by building Racer, the realtime data synchronization engine at Derby&#8217;s core. We focused first on innovating in the APIs and capabilities of the system, since there was little precedence for a generic realtime app data engine. There were many fantastic examples of realtime applications, such as chat, Google Docs and Wave, multi-player games, and financial platforms. However, they were by and large created by large organizations with massive resources. In contrast, clear patterns, standards, and frameworks had been established for server-rendered web apps and REST-backed client apps. Such tools were widely available to a variety of developers, including individuals and small companies.</p>
+
+<p>On top of Racer, we built out Derby as a full-stack application framework with the capabilities of both a client-side single page application and a server-rendered Express app. Derby remains on of the very few solutions for taking advantage of full client and server code reuse, and it enables super fast page loads paired with immediate client-side updates.</p>
+
+<p>We are now building a next generation application for companies to better manage their hiring. Our technology enables us to provide features unlike any other application in our market. At the same time, personally developing a full enterprise application helps us to test and improve the platform in a tight iteration loop.</p>
+
+<h2>Establishing a solid foundation</h2>
+
+<p>As with most new projects, we couldn&#8217;t foresee everything that would and wouldn&#8217;t work well. We wrote a whole lot of features and came up with a many new concepts as we created Racer and Derby. Many of these new ideas are fantastic, and many of them didn&#8217;t work well or made the implementation too complex. We also didn&#8217;t write the current code to scale across multiple processes, since our focus was on innovating at the API level.</p>
+
+<p>The next step in our development is simplifying down to the good ideas and making a horizontally scalable system. At the same time, we will be coordinating our work on ShareJS and Racer to better both projects.</p>
+
+<p>The biggest part of the simplification work is moving away from Racer&#8217;s current fully arbitrary JSON structure object and replacing it with a mirror of Mongo&#8217;s collections and documents. The model API will stay the same, but we&#8217;ll be enforcing a collection and document topology consistently. This is already a requirement when using the Mongo adapter, and it is similar to how most other MVC frameworks structure their models.</p>
+
+<p>Each collection will be a map from document ID to document data. Aside from access control filtering, each document will be present in the model or it won&#8217;t. Instead of trying to select out subsets of documents like a server-side Mongo query does, Racer will simply fetch each entire document that matches a query. We&#8217;ve learned that merging arbitrary document fragments from multiple queries introduces an excessive amount of complexity, and will likely be a big source of bugs without being particularly useful.</p>
+
+<p>Over the next few months, we&#8217;re rewriting a great deal of Racer and refactoring ShareJS. Joseph is leading this effort and working on it full time. ShareJS will remain an independent project for those who only want to use its OT capabilities alongside their current stack. Integrating OT will help us to simplify some of the gnarlier parts of the model code while maintaining Racer&#8217;s simple API. What&#8217;s more, this will bring us much closer to proper offline support by default.</p>
+
+<p>Racer will sit on top of ShareJS. ShareJS will provide the database layer, communication between servers and clients, and OT algorithms, and Racer will provide the model interface. Horizontal scaling support will be added into ShareJS itself, which is going to undergo a huge refactor to make the pieces fit nicely together. The highlights are:</p>
+
+<ul>
+<li>Splitting ShareJS into three smaller projects: OT types, a scaling database backend, and a glue project to expose an OT database to a web browser.</li>
+<li>Moving to a collection/document view instead of a flat set of documents.</li>
+<li>Support for live database queries.</li>
+</ul>
+
+
+<p>You can see a much more detailed description of the backend changes to ShareJS on <a href="http://josephg.com/post/45724165226/its-time-to-rewrite-sharejs">Joseph&#8217;s blog</a>.</p>
+
+<p>These changes will be implemented in a bottom-up manner, so the changes to Racer will land last. In the meantime, we have been fixing bugs as they come up, but much of the current code is going to be removed or completely replaced over the next few months.</p>
+
+<h2>Let&#8217;s meet!</h2>
+
+<p>We&#8217;d also like to engage in a more open dialog with our community. We&#8217;ll be hosting a <a href="http://www.meetup.com/lever-open-source/events/111258232/">meetup next Wednesday, April 3</a> at our office in San Francisco. Hope to see you there!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nate Smith and Brian Noguchi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-26T12:41:00-07:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time/" data-via="derbyjs" data-counturl="http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/" title="Previous Post: Now hiring: Join the Derby core team at Lever">&laquo; Now hiring: Join the Derby core team at Lever</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/03/26/getting-derby-ready-for-prime-time/">Getting Derby ready for prime time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/">Now hiring: Join the Derby core team at Lever</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/19/derby-v0-dot-3-1/">Derby v0.3.1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/14/our-take-on-derby-vs-meteor/">Our take on Derby vs. Meteor</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/13/derby-v0-dot-3-0/">Derby v0.3.0</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("derbyjs", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/derbyjs" class="twitter-follow-button" data-show-count="false">Follow @derbyjs</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nate Smith and Brian Noguchi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'derbyblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time/';
+        var disqus_url = 'http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

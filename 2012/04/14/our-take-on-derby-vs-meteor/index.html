@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Our take on Derby vs. Meteor - Derby blog</title>
+  <meta name="author" content="Nate Smith and Brian Noguchi">
+
+  
+  <meta name="description" content="We have received a number of requests for a comparison. I&#8217;d like to thank Nick Retallack, who already did a great job summarizing a lot of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.derbyjs.com//2012/04/14/our-take-on-derby-vs-meteor">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Derby blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+  article > footer { padding-bottom: 0 }
+</style>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26625318-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Derby blog</a></h1>
+  
+    <h2>Full-stack MVC framework making it easy to write realtime, collaborative applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.derbyjs.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="http://derbyjs.com/">derbyjs.com</a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="https://github.com/codeparty/derby">Github</a></li>
+  <li><a href="http://twitter.com/derbyjs">Twitter</a></li>
+  <li><a href="http://groups.google.com/group/derbyjs">Google Groups</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Our take on Derby vs. Meteor</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-14T12:14:00-07:00" pubdate data-updated="true">Apr 14<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>We have received a number of requests for a comparison. I&#8217;d like to thank <a href="http://nickretallack.com/">Nick Retallack</a>, who already did a great job summarizing a lot of these points on our <a href="http://groups.google.com/group/derbyjs">Google Group</a>. Many of his observations are included here.</p>
+
+<h2>A bit of the origin story</h2>
+
+<p>First of all, I should mention that Brian and I first met the Meteor team last November when we demoed an early version of Derby at the <a href="http://krtconf.com/">Keeping it Realtime Conference</a> hosted by <a href="http://andyet.net/">&amp;yet</a>. When we met, the <a href="http://meteor.com/">Meteor</a> team had already started on their framework, and the similarities were obvious. Some time before, I had also met with David Greenspan (who recently joined Meteor) to pick his brain and learn more about his experience writing <a href="http://en.wikipedia.org/wiki/Etherpad">Etherpad</a>. Our two teams like each other, we&#8217;ve been keeping in touch, and we have all learned a lot from each other.</p>
+
+<p>Our teams share a similar vision for a world where all applications are realtime and collaborative by default. We as well as a number of other other developers all had a revelation about a year and a half ago&#8212;the way that web apps are currently built makes it painfully difficult to create the best user experience, where data dynamically update everywhere.</p>
+
+<p>Brian and I first discussed this vision with each other a year ago. I was coming from working as a Product Manager on the Google Search team, and he had been working on a number of open source Node.js projects including <a href="http://mongoosejs.com/">Mongoose</a> and <a href="http://everyauth.com/">everyauth</a>. I was interested in writing a framework, because I believed it was the best way to write an app with the kind of performance that I desired, and Brian felt that the Node.js community needed an easy to use framework for those developers who preferred tools like Rails and PHP.</p>
+
+<h2>The Holy Grail: server and client code sharing</h2>
+
+<p>From Google Search, I learned that in order to have a responsive web app, it is critical to both render pages on the server and in the browser. Google can afford to do this, because it has so many engineers and speed is of paramount importance to search. To achieve fast page loads as well as fast page updates, Google implements pretty much the entire Search front-end in C++ as well as JavaScript. They have been working on a number of projects to make this easier over the past couple of years, but needless to say, such a process is too expensive and slow for a startup or a complex app.</p>
+
+<p>Gmail, Twitter, and other sites rendered only in the client were painfully slow to load. Twitter went through the full circle on this&#8212;they started as a server-rendered Rails app, rewrote to render <a href="http://engineering.twitter.com/2010/09/tech-behind-new-twittercom.html">everything in the client</a>, and then realized it took their users 4 seconds to be able to read a 140 character message. Now, Twitter renders half the page in Scala on the server, and they render the other half in JavaScript in the client. This both makes it more difficult for them to maintain a code base in multiple languages and means that the least important items on the page pop-in a few seconds after page load. People are very sensitive to movement, so in effect, they are distracting their users with the least important information after every page load.</p>
+
+<p>Thanks to the awesome re-invention of JavaScript performance starting with V8 and the ability to easily create JavaScript servers with Node.js, lots of developers are excited about the notion of using JavaScript for both server and client development. But despite finally using the same language, few Node.js applications to date deliver on the amazing ability to share code. Even with a common language, there are still a lot of issues including very different latency and connection stability, separate ways of dealing with URLs on the server and in the browser, the existence of a DOM in the browser and not on the server, and direct access to a filesystem only on the server.</p>
+
+<h2>Let&#8217;s get down to business!</h2>
+
+<p>So after all that, our teams decided to go in similar directions in some ways, but very different in others. Derby&#8217;s goal is to make it possible for any developer to write apps that load as fast as a search engine, are as interactive as a document editor, and work offline. And to <a href="https://groups.google.com/forum/?fromgroups#!topic/derbyjs/pvtbLullSn4">quote Geoff</a>, Meteor&#8217;s goal is to create &#8220;a &#8216;mass-market&#8217; app platform that could be used for 90% of the sites on the web, and for that 90%, make web development faster and within reach of more people.&#8221;</p>
+
+<h3>GPL vs. MIT</h3>
+
+<p>Currently, Meteor is only available under a <a href="http://meteor.com/faq/how-is-meteor-licensed">GPL license</a>. This means that you must contact them and arrange for a commercial license if you do not wish to release your source under the GPL or another compatible license.</p>
+
+<p>Derby, Racer, and all other components of our framework are released under the permissive MIT license. Thus, you can do pretty much anything you want with it (other than sue us), and we can&#8217;t stop you or change our minds later.</p>
+
+<p>I&#8217;m no lawyer, so don&#8217;t take any of what I just said as legal advice; I don&#8217;t have a crystal ball or anything. (Yes, a lawyer once told me to say that.)</p>
+
+<h3>Meteor packages vs. npm</h3>
+
+<p>Meteor has created their own package system and means for distributing packages.</p>
+
+<p>Node.js modules are clearly defined by the CommonJS format and the built-in module APIs. However, it does not include a means for distributing modules. In the early days, Node.js had a few competing package managers, but pretty much everyone has now finalized on using <a href="http://npmjs.org/">npm</a>. It is so universal, that npm is now distributed directly with the official Node.js binary distributions.</p>
+
+<p>Frankly, this is the main thing that concerns me about Meteor. It is likely that many people trying Meteor will never have used Node.js before, and they won&#8217;t appreciate the great benefits of distribution via npm. I and many other developers view npm as one of Node.js&#8217;s core strengths, and I would be very sad to see it weakened by an incompatible package system.</p>
+
+<p>Like pretty much every other Node.js project out there, we primarily distribute Derby, Racer, and all plugins for these projects as npm modules. We will continue to break out our projects into smaller modules so that they can be better reused by others. Perhaps you don&#8217;t use Derby, but you need to parse some HTML. We had to write a simple and fast HTML parser for our templates to work, so you&#8217;ll be able to use just that in any Node.js project. <a href="http://www.senchalabs.org/connect/">Connect</a> is great example of a project that has a rich ecosystem of middleware designed to work with it that are all distributed via npm, and we hope to follow in the same pattern.</p>
+
+<h3>Compatibility with other libraries</h3>
+
+<p>Meteor makes it possible to replace parts of it with other libraries. It is especially flexible when it comes to substituting in client-side libraries, though those libraries must first be wrapped as a Meteor package.</p>
+
+<p>Meteor mostly manages the creation of a server in a custom way. This makes it easy to create and deploy a Meteor app to their hosting service, but it makes it much harder to use Meteor as a module of a more traditional Node.js server.</p>
+
+<p>In contrast, Derby is just a normal npm module that you can add to any Node.js server. If you want to use any of the <a href="http://search.npmjs.org/">8900 packages</a> in npm (at the moment), simply add them to your package.json file and <code>npm install</code> away!</p>
+
+<p>Derby does not provide any sort of hosting solution, though there are lots of great hosting services for Node.js out there. We will provide better instructions for how to get Derby apps up and running quickly on a public server in the future.</p>
+
+<p><a href="http://derbyjs.com/#introduction_to_racer">Racer</a> (the realtime engine powering Derby&#8217;s models) is a separate module, and it can be used independently of Derby. You could hook pretty much any UI layer up to Racer and handle the methods that it emits as the model is updated. Racer is built on top of the very popular <a href="http://socket.io/">Socket.IO</a> module, which you can use directly if you need to.</p>
+
+<p>Derby also uses popular modules at its core, especially <a href="http://expressjs.com/">Express</a> for routing and <a href="https://github.com/substack/node-browserify">Browserify</a>, which can bundle up most Node.js modules for the browser automatically.</p>
+
+<h3>MongoDB API vs. Racer methods</h3>
+
+<p>Meteor takes the MongoDB API all the way to the browser. The MongoDB API is powerful and easy to use from JavaScript. It has also been around for some time, so there are well established patterns for using it do most things that an application might need to do. A lot of people seem to think this is a fun way to build apps, and it reduces need to understand multiple layers of abstraction. Some have expressed concerns over the security implications, but I think we should reserve judgment until the Meteor team has more time to address what they think is the best approach for authentication and authorization.</p>
+
+<p>Racer has its own API based around a set of mutator methods and paths. This API maps pretty much 1:1 with any document store, including MongoDB. This has some pluses and minuses, but we believe it is the right choice for a few reasons:</p>
+
+<h4>Conflict resolution</h4>
+
+<p>Paths and methods map well to conflict detection techniques that we think will be one of the major benefits of using Racer. For now, our default mode is last-writer-wins, which is equivalent to how Meteor saves data. However, we have preliminary implementations of conflict resolution via Software Transactional Memory and Operational Transformation methods. Such techniques will make it possible to use a Derby app offline and then resync correctly. It will also make it possible to easily add features like Google-Docs-style realtime collaborative text editing in any text box.</p>
+
+<h4>Datastore portability</h4>
+
+<p>Our paths and methods are granular enough to take advantage of the capabilities of most datastores, but it is possible to switch from one datastore to another or to use them with multiple datastores simultaneously. Swapping in Riak, Postgres, CouchDB, or another service should be straightforward without modifying application code.</p>
+
+<h4>Efficient PubSub</h4>
+
+<p>Paths map well to PubSub, which is how we propagate changes in realtime. In contrast, Meteor&#8217;s LiveMongo implementation simply writes to the database and polls it frequently for the data in use by every connected client. The advantage to polling is that it can support subscriptions to pretty much any kind of Mongo query, but we have implemented most queries and query PubSub without needing to poll the database. We have no real-world evidence yet, but we expect PubSub to scale much better than database polling.</p>
+
+<h4>API plugins</h4>
+
+<p>It will be possible to create plugins that act like datastores, even though they are communicating with a backend service or a 3rd party API. Database adapters are built on top of a system of routes that can be used in a custom manner.</p>
+
+<h3>Server rendering and shared routes</h3>
+
+<p>Derby is one of the only frameworks designed to run all rendering and routing code on the server and in the browser. It&#8217;s even possible to use Derby to render static pages that share templates with dynamic apps.</p>
+
+<p>This means you get crazy fast page loads with no effort. Even for a simple client-rendered app, pages typically take a second or two to load and then be displayed to the user. Simple Derby apps can fire the onload event in less than 200ms. As apps get more complex, server rendering has an even more drastic effect.</p>
+
+<p>Lots of big companies including Google, Amazon, and Facebook dedicate massive resources to optimizing page load time, because it directly translates into better conversion rates and more revenue. I died a little bit inside the day Gmail added a loading progress bar. Don&#8217;t do that.</p>
+
+<p>In addition, server-rendering is critical for search engine optimization, and it provides accessibility to screen readers and browsers without JavaScript.</p>
+
+<p>Derby exposes <a href="http://derbyjs.com/#routes">routes</a> as an Express middleware on the server, so you can use it alongside other server-only Express routes for tasks like uploading files, and you can even write multiple apps that handle different sets of routes on the same Express server. For example, you might write a separate admin app or a separate mobile app that doesn&#8217;t load all of the code for a desktop browser app.</p>
+
+<p>While Derby gives you all of the speed and accessibility advantages of a more traditional multi-page app, it also creates fully optimized single-page applications that can render any template or route in the browser. Client-side routes simply render any links that they can without doing a page refresh; you don&#8217;t have to call methods on a special browser-side routing API. Just put a normal HTML link on the page, and Derby will render it client-side.</p>
+
+<p>Meteor does not have these features yet, though they recently rewrote their templating engine to use strings so that it is now <a href="http://meteor.com/faq/can-meteor-serve-static-html">possible for them to add</a>.</p>
+
+<h3>Model-view data bindings</h3>
+
+<p>Meteor uses a reactive functional programming approach to updating templates that could potentially work with any template engine. As a template is rendered, all of the data that is used to render that template is assumed to be an input to that chunk of the UI. Later, when that data changes, the template is re-rendered, and its output is compared with the DOM. Meteor then patches up the DOM to apply the minimum required changes. Effectively, every single variable and function in a template is bound. The big advantage to this approach is its simplicity and ability to support any template language.</p>
+
+<p>In contrast, Derby has its own template language based on Handlebars. <a href="http://derbyjs.com/#bindings">Bindings</a> are declared explicitly, and the HTML of the template is parsed in order to figure out which parts of the DOM need to be updated. Unlike Meteor&#8217;s, Derby&#8217;s bindings are two way; when form elements are bound, the model is automatically updated as users type in text inputs, check checkboxes, and select items in drop downs. In addition, it is possible to bind everything or to optimize the performance of templates by only binding what is necessary. Outputting non-bound data may also be preferred if a developer wishes to update the view via manual DOM manipulation in special cases.</p>
+
+<h3>DOM event handlers</h3>
+
+<p>It is a relatively minor difference, but Meteor uses CSS selectors on specific templates, and Derby uses HTML attributes within templates to declare event handlers. <a href="http://api.jquery.com/category/events/">jQuery</a> and <a href="http://documentcloud.github.com/backbone/#View-delegateEvents">Backbone</a> have popularized the CSS selector method of scoping event handlers. <a href="http://knockoutjs.com/documentation/event-binding.html">Knockout</a> and <a href="http://docs.angularjs.org/#!/tutorial/step_10">Angular</a> use HTML attributes.</p>
+
+<p>We prefer the <a href="http://derbyjs.com/#dom_event_binding">HTML markup approach</a>, because it is more work to figure out what CSS selector matches the correct elements, and it is reasonably likely that HTML structure will change and silently break CSS selectors. With the markup approach, it is less likely that function names will be changed inadvertently, and an error will be thrown when the function can no longer be found.</p>
+
+<p>Derby also has an innovative approach to event bubbling that is more efficient and intuitive compared to typical event bubbling. Instead of bubbling up the entire DOM to the root documentElement for every event, Derby will stop bubbling once it finds an element that is bound to the event. Like with routes, bubbling can be continued by calling a <code>next()</code> method passed to the event handler.</p>
+
+<h3>Fibers</h3>
+
+<p>Meteor uses the <a href="https://github.com/laverdet/node-fibers">Fibers</a> extension for Node.js that makes it possible to write synchronous looking code on the server instead of the more common callback style used by most Node.js projects. Some prefer this way of writing asynchronous code, others strongly disagree with it. There are a number of arguments on both sides.</p>
+
+<p>This is very contentious issue at the moment, and we prefer to stay out of it. A <a href="http://www.mikealrogers.com/posts/a-vocal-minority.html">very small percentage</a> of modules in npm are written this way, so we have stuck to the more traditional Node.js style of callbacks.</p>
+
+<h2>Wrapping it up</h2>
+
+<p>You can achieve many of the same things with both frameworks. Both are powerful tools for implementing features that are very difficult to write in more traditional web frameworks like Rails and PHP.</p>
+
+<p>Derby has been more focused on making sure it can support advanced features like conflict detection, offline clients, and extremely fast rendering. We are also more focused on compatibility with other modules in the existing Node.js ecosystem, and we have a permissive open source license.</p>
+
+<p>Ultimately, we are all trying to create the best tools for developers, and competition can help to breed innovation. We are happy to see other approaches like <a href="http://meteor.com/">Meteor</a>, <a href="http://spacemagic.io/">SpaceMagic</a>, and <a href="http://www.firebase.com/">Firebase</a>, because we will all learn from each other. We will end up with better tools, a better web, and better experiences for users.</p>
+
+<p>If you&#8217;re interested in what we&#8217;re working on, follow us on <a href="https://twitter.com/#!/derbyjs">Twitter</a> and <a href="https://github.com/codeparty/derby/">GitHub</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nate Smith and Brian Noguchi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-14T12:14:00-07:00" pubdate data-updated="true">Apr 14<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.derbyjs.com//2012/04/14/our-take-on-derby-vs-meteor/" data-via="derbyjs" data-counturl="http://blog.derbyjs.com//2012/04/14/our-take-on-derby-vs-meteor/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/04/13/derby-v0-dot-3-0/" title="Previous Post: Derby v0.3.0">&laquo; Derby v0.3.0</a>
+      
+      
+        <a class="basic-alignment right" href="/2012/04/19/derby-v0-dot-3-1/" title="Next Post: Derby v0.3.1">Derby v0.3.1 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/03/26/getting-derby-ready-for-prime-time/">Getting Derby ready for prime time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/">Now hiring: Join the Derby core team at Lever</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/19/derby-v0-dot-3-1/">Derby v0.3.1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/14/our-take-on-derby-vs-meteor/">Our take on Derby vs. Meteor</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/13/derby-v0-dot-3-0/">Derby v0.3.0</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("derbyjs", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/derbyjs" class="twitter-follow-button" data-show-count="false">Follow @derbyjs</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nate Smith and Brian Noguchi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'derbyblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.derbyjs.com//2012/04/14/our-take-on-derby-vs-meteor/';
+        var disqus_url = 'http://blog.derbyjs.com//2012/04/14/our-take-on-derby-vs-meteor/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

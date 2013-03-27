@@ -1,117 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>Derby blog</title>
-  <meta name="author" content="Nate Smith and Brian Noguchi">
-
-  
-  <meta name="description" content="At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://blog.derbyjs.com/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Derby blog" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<style>
-  article > footer { padding-bottom: 0 }
-</style>
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-26625318-2']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
-</head>
-
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Derby blog</a></h1>
-  
-    <h2>Full-stack MVC framework making it easy to write realtime, collaborative applications</h2>
-  
-</hgroup>
-
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:blog.derbyjs.com/" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="http://derbyjs.com/">derbyjs.com</a></li>
-  <li><a href="/">Blog</a></li>
-  <li><a href="https://github.com/codeparty/derby">Github</a></li>
-  <li><a href="http://twitter.com/derbyjs">Twitter</a></li>
-  <li><a href="http://groups.google.com/group/derbyjs">Google Groups</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+  <title><![CDATA[Derby blog]]></title>
+  <link href="http://blog.derbyjs.com//atom.xml" rel="self"/>
+  <link href="http://blog.derbyjs.com//"/>
+  <updated>2013-03-26T20:53:42-07:00</updated>
+  <id>http://blog.derbyjs.com//</id>
+  <author>
+    <name><![CDATA[Nate Smith and Brian Noguchi]]></name>
     
-      <h1 class="entry-title"><a href="/2013/03/26/getting-derby-ready-for-prime-time/">Getting Derby ready for prime time</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
   
-
-
-<time datetime="2013-03-26T12:41:00-07:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that is a bug. In addition, we believe that web apps shouldn&#8217;t feel inferior to their desktop or mobile counterparts&mdash;they should load super fast, respond to interaction instantly, and work offline without interruption.</p>
+  <entry>
+    <title type="html"><![CDATA[Getting Derby ready for prime time]]></title>
+    <link href="http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time/"/>
+    <updated>2013-03-26T12:41:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2013/03/26/getting-derby-ready-for-prime-time</id>
+    <content type="html"><![CDATA[<p>At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that is a bug. In addition, we believe that web apps shouldn&#8217;t feel inferior to their desktop or mobile counterparts&mdash;they should load super fast, respond to interaction instantly, and work offline without interruption.</p>
 
 <p>We are creating Derby and Racer, intending to build the best technology to power the next generation of innovative web applications. We also aim to make their development accessible for individual developers, startups, and large teams.</p>
 
@@ -157,42 +64,15 @@
 <h2>Let&#8217;s meet!</h2>
 
 <p>We&#8217;d also like to engage in a more open dialog with our community. We&#8217;ll be hosting a <a href="http://www.meetup.com/lever-open-source/events/111258232/">meetup next Wednesday, April 3</a> at our office in San Francisco. Hope to see you there!</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/">Now hiring: Join the Derby core team at Lever</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-03T14:34:00-07:00" pubdate data-updated="true">Oct 3<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In addition to our continued development of Derby, Brian and I have started a company called <a href="https://lever.co/">Lever</a>. Lever is redefining talent software, starting with applicant tracking for hiring. With Lever, we aim to set the standard for next generation web apps, and we are hiring software engineers who share our ambitions.</p>
+  <entry>
+    <title type="html"><![CDATA[Now hiring: Join the Derby core team at Lever]]></title>
+    <link href="http://blog.derbyjs.com//2012/10/03/now-hiring-join-the-derby-core-team-at-lever/"/>
+    <updated>2012-10-03T14:34:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2012/10/03/now-hiring-join-the-derby-core-team-at-lever</id>
+    <content type="html"><![CDATA[<p>In addition to our continued development of Derby, Brian and I have started a company called <a href="https://lever.co/">Lever</a>. Lever is redefining talent software, starting with applicant tracking for hiring. With Lever, we aim to set the standard for next generation web apps, and we are hiring software engineers who share our ambitions.</p>
 
 <h2>Innovate in web technology while solving real world problems</h2>
 
@@ -232,42 +112,15 @@
 <h3>Apply</h3>
 
 <p><a href="mailto:jobs+blog@lever.co">jobs+blog@lever.co</a></p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/04/19/derby-v0-dot-3-1/">Derby v0.3.1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-19T18:22:00-07:00" pubdate data-updated="true">Apr 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Derby v0.3.1 is out with support for LESS compilation, Express 3, easier to install examples, and a number of bug fixes.</p>
+  <entry>
+    <title type="html"><![CDATA[Derby v0.3.1]]></title>
+    <link href="http://blog.derbyjs.com//2012/04/19/derby-v0-dot-3-1/"/>
+    <updated>2012-04-19T18:22:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2012/04/19/derby-v0-dot-3-1</id>
+    <content type="html"><![CDATA[<p>Derby v0.3.1 is out with support for LESS compilation, Express 3, easier to install examples, and a number of bug fixes.</p>
 
 <h2>LESS</h2>
 
@@ -280,42 +133,15 @@
 <h2>Easier to get examples installed</h2>
 
 <p>A number of people ran into issues running the derby examples on their machines, because of how they were included. They are now in a separate <a href="https://github.com/codeparty/derby-examples">GitHub repo</a> with much better installation instructions. Hopefully we have resolved all of the issues running Derby on Windows as well.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/04/14/our-take-on-derby-vs-meteor/">Our take on Derby vs. Meteor</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-14T12:14:00-07:00" pubdate data-updated="true">Apr 14<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>We have received a number of requests for a comparison. I&#8217;d like to thank <a href="http://nickretallack.com/">Nick Retallack</a>, who already did a great job summarizing a lot of these points on our <a href="http://groups.google.com/group/derbyjs">Google Group</a>. Many of his observations are included here.</p>
+  <entry>
+    <title type="html"><![CDATA[Our take on Derby vs. Meteor]]></title>
+    <link href="http://blog.derbyjs.com//2012/04/14/our-take-on-derby-vs-meteor/"/>
+    <updated>2012-04-14T12:14:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2012/04/14/our-take-on-derby-vs-meteor</id>
+    <content type="html"><![CDATA[<p>We have received a number of requests for a comparison. I&#8217;d like to thank <a href="http://nickretallack.com/">Nick Retallack</a>, who already did a great job summarizing a lot of these points on our <a href="http://groups.google.com/group/derbyjs">Google Group</a>. Many of his observations are included here.</p>
 
 <h2>A bit of the origin story</h2>
 
@@ -436,42 +262,15 @@
 <p>Ultimately, we are all trying to create the best tools for developers, and competition can help to breed innovation. We are happy to see other approaches like <a href="http://meteor.com/">Meteor</a>, <a href="http://spacemagic.io/">SpaceMagic</a>, and <a href="http://www.firebase.com/">Firebase</a>, because we will all learn from each other. We will end up with better tools, a better web, and better experiences for users.</p>
 
 <p>If you&#8217;re interested in what we&#8217;re working on, follow us on <a href="https://twitter.com/#!/derbyjs">Twitter</a> and <a href="https://github.com/codeparty/derby/">GitHub</a>.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/04/13/derby-v0-dot-3-0/">Derby v0.3.0</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-13T22:19:00-07:00" pubdate data-updated="true">Apr 13<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This is a big release for us&#8212;Derby finally has support for automatic persistence! Initially we have support for MongoDB, and it will be possible to swap in anything else through use of a different adapter.</p>
+  <entry>
+    <title type="html"><![CDATA[Derby v0.3.0]]></title>
+    <link href="http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0/"/>
+    <updated>2012-04-13T22:19:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0</id>
+    <content type="html"><![CDATA[<p>This is a big release for us&#8212;Derby finally has support for automatic persistence! Initially we have support for MongoDB, and it will be possible to swap in anything else through use of a different adapter.</p>
 
 <p>In addition, we have added support for subscriptions to queries and made big upgrades to the power of the HTML templates. Templates now support reactive helper functions, and we have replaced partials with more flexible HTML components.</p>
 
@@ -783,42 +582,15 @@
 
 
 <p>Components make it possible to write more expressive templates and reduce repeated boilerplate. We will continue to extend components and add support for creating reusable component libraries.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/03/25/derby-v0-dot-1-10/">Derby v0.1.10</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-25T19:34:00-07:00" pubdate data-updated="true">Mar 25<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This release significantly improves templates and event bindings. It also fixes a ton of bugs, so get on it!</p>
+  <entry>
+    <title type="html"><![CDATA[Derby v0.1.10]]></title>
+    <link href="http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10/"/>
+    <updated>2012-03-25T19:34:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10</id>
+    <content type="html"><![CDATA[<p>This release significantly improves templates and event bindings. It also fixes a ton of bugs, so get on it!</p>
 
 <h2>Namespaces to the rescue!</h2>
 
@@ -987,42 +759,15 @@
 <h2>Even the error messages are fast</h2>
 
 <p>For faster development, we added live-updating as files are edited in the last release. However, any errors would still kill the server and require a manual restart. Template and CSS error handling is now much improved, and errors with either of these are displayed in the browser as files are saved. Even better, the page updates and the error message disappears as soon as the error is corrected.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/03/09/derby-v0-dot-1-9/">Derby v0.1.9</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-09T10:31:00-08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The latest release of Derby includes easier installation without Redis; automatic reloading of scripts, templates, and styles; better subscription functionality; and lots of bug fixes.</p>
+  <entry>
+    <title type="html"><![CDATA[Derby v0.1.9]]></title>
+    <link href="http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9/"/>
+    <updated>2012-03-09T10:31:00-08:00</updated>
+    <id>http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9</id>
+    <content type="html"><![CDATA[<p>The latest release of Derby includes easier installation without Redis; automatic reloading of scripts, templates, and styles; better subscription functionality; and lots of bug fixes.</p>
 
 <h2>Modularity FTW</h2>
 
@@ -1127,152 +872,18 @@
 <p>It shouldn&#8217;t require any changes to your application code, and it won&#8217;t affect the model API, so go ahead and prototype with the current version of Derby.</p>
 
 <p>Note that if you try out this out now, bad things will happen. But hey, the code is on the Internet, so someone is obviously going to do it. Just know that it isn&#8217;t supposed to work yet.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/03/09/welcome-to-the-derby-blog/">Welcome to the Derby blog!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-09T09:39:00-08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It&#8217;s about time Derby has its own blog. We will post when there is a new release or when we have something of general interest to say.</p>
+  <entry>
+    <title type="html"><![CDATA[Welcome to the Derby blog!]]></title>
+    <link href="http://blog.derbyjs.com//2012/03/09/welcome-to-the-derby-blog/"/>
+    <updated>2012-03-09T09:39:00-08:00</updated>
+    <id>http://blog.derbyjs.com//2012/03/09/welcome-to-the-derby-blog</id>
+    <content type="html"><![CDATA[<p>It&#8217;s about time Derby has its own blog. We will post when there is a new release or when we have something of general interest to say.</p>
 
 <p>Thanks to <a href="http://octopress.org/">Octopress</a> and <a href="http://pages.github.com/">GitHub Pages</a> for making it easy to setup a coding blog.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/2013/03/26/getting-derby-ready-for-prime-time/">Getting Derby ready for prime time</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/">Now hiring: Join the Derby core team at Lever</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/04/19/derby-v0-dot-3-1/">Derby v0.3.1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/04/14/our-take-on-derby-vs-meteor/">Our take on Derby vs. Meteor</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/04/13/derby-v0-dot-3-0/">Derby v0.3.0</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("derbyjs", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/derbyjs" class="twitter-follow-button" data-show-count="false">Follow @derbyjs</a>
-  
-</section>
-
-
-
-
-
-  
-</aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Nate Smith and Brian Noguchi -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
-
-<script type="text/javascript">
-      var disqus_shortname = 'derbyblog';
-      
-        
-        var disqus_script = 'count.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
-
-
-
-
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
-</body>
-</html>
+</feed>

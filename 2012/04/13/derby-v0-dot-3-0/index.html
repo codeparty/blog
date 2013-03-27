@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Derby v0.3.0 - Derby blog</title>
+  <meta name="author" content="Nate Smith and Brian Noguchi">
+
+  
+  <meta name="description" content="This is a big release for us&#8212;Derby finally has support for automatic persistence! Initially we have support for MongoDB, and it will be &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Derby blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+  article > footer { padding-bottom: 0 }
+</style>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26625318-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Derby blog</a></h1>
+  
+    <h2>Full-stack MVC framework making it easy to write realtime, collaborative applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.derbyjs.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="http://derbyjs.com/">derbyjs.com</a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="https://github.com/codeparty/derby">Github</a></li>
+  <li><a href="http://twitter.com/derbyjs">Twitter</a></li>
+  <li><a href="http://groups.google.com/group/derbyjs">Google Groups</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Derby v0.3.0</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-13T22:19:00-07:00" pubdate data-updated="true">Apr 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This is a big release for us&#8212;Derby finally has support for automatic persistence! Initially we have support for MongoDB, and it will be possible to swap in anything else through use of a different adapter.</p>
+
+<p>In addition, we have added support for subscriptions to queries and made big upgrades to the power of the HTML templates. Templates now support reactive helper functions, and we have replaced partials with more flexible HTML components.</p>
+
+<p>By the way, you may have noticed that we skipped v0.2. We are following the common convention <code>major.minor.patchlevel</code> where odd minor versions are unstable. Node.js, the Linux kernel, Redis, and lots of other projects follow this convention. Since odd minor versions are unstable, patch level versions will likely break APIs. Patch level updates to even numbered versions will only include bug fixes. The first such stable version will likely be v0.4.0.</p>
+
+<h2>Want some database with that realtime syncing?</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// No persistence</span>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">createStore</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">listen</span><span class="o">:</span> <span class="nx">server</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Persistence-a-go-go</span>
+</span><span class='line'><span class="nx">derby</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;racer-db-mongo&#39;</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">createStore</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">listen</span><span class="o">:</span>  <span class="nx">server</span>
+</span><span class='line'><span class="p">,</span> <span class="nx">db</span><span class="o">:</span>      <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Mongo&#39;</span><span class="p">,</span> <span class="nx">uri</span><span class="o">:</span> <span class="s1">&#39;mongodb://localhost/database&#39;</span><span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>No, seriously, it is two lines of code.</p>
+
+<p>All of the db adapters will be released as separate npm modules. As with all npm modules, you need to add a dependency to your <code>package.json</code> file and then re-run <code>$ npm install</code> in order to require it.</p>
+
+<h3>Behind the scenes</h3>
+
+<p>Racer (the realtime engine powering Derby&#8217;s models) describes all data mutations in terms of a method, path, and some arguments. These methods, e.g. <code>set</code>, <code>push</code>, etc., can be thought of like the HTTP verbs, such as <code>POST</code>, <code>PUT</code>, and <code>DELETE</code>. Model paths are like URLs to a specific piece of data, and the method arguments are like the content of a request. Just as a REST API can be defined in terms of HTTP verbs and URLs, Racer has a routing system for mutation methods and paths.</p>
+
+<p>By default, Racer uses a basic in-memory datastore that defines these store routes for each mutation method and path pattern. Database adapters like the Mongo adapter do the same thing, implementing each method in a database-specifc way. Because these routes can handle any method on any path, no additional server code needs to be written in order to persist data.</p>
+
+<p>It is possible to add custom store routes for specifc paths if an application connects to an external API. Such routes could be provided as a generic plugin for Racer that makes it dead simple for other developers to use an API with Racer&#8217;s automatically synced models. More documentaion on store routes will be coming soon.</p>
+
+<h3>So where is the data saved?</h3>
+
+<p>Racer paths are translated into database collections and documents using a natural mapping:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>collection.documentId.document
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>All synced paths (anything that doesn&#8217;t start with an underscore) must follow this convention. In other words, all model data stored at the first two path segments should be an object and not a string, number, or other primitive type.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Examples:</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;todos.id_0.completed&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;rooms.lobby.messages.5.text&#39;</span><span class="p">,</span> <span class="s1">&#39;Call me&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Hi there&#39;</span>
+</span><span class='line'>  <span class="p">,</span> <span class="nx">author</span><span class="o">:</span> <span class="s1">&#39;Erik Mathers&#39;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// The first and second segments in root paths must be objects</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Hi there&#39;</span><span class="p">)</span>      <span class="c1">// WARNING INVALID</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;app.title&#39;</span><span class="p">,</span> <span class="s1">&#39;Hi there&#39;</span><span class="p">)</span>  <span class="c1">// WARNING INVALID</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// However, any type may be stored at any private path, which</span>
+</span><span class='line'><span class="c1">// starts with an underscore and is not synced back to the server</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;_title&#39;</span><span class="p">,</span> <span class="s1">&#39;Hi there&#39;</span><span class="p">)</span>     <span class="c1">// OK</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The document&#8217;s id (the second path segment) is automatically added as the <code>id</code> property of the document, so that it can be retrieved from the datastore.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Hi there&#39;</span>
+</span><span class='line'>  <span class="p">,</span> <span class="nx">author</span><span class="o">:</span> <span class="s1">&#39;Erik Mathers&#39;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;meta.app&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="c1">// Logs: {</span>
+</span><span class='line'><span class="c1">//   id: &#39;app&#39;</span>
+</span><span class='line'><span class="c1">// , title: &#39;Hi there&#39;</span>
+</span><span class='line'><span class="c1">// , author: &#39;Erik Mathers&#39;</span>
+</span><span class='line'><span class="c1">// }</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Queries &#8212; we do &#8216;em live!</h2>
+
+<p>Racer has always had granular PubSub based on path patterns. In addition, it is now possible to specify subscriptions in terms of a more expressive query syntax. These queries are similar to most database queries, except that they can automatically detect when new data matches and then sync that data to all appropriate clients.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:groupName&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">page</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">groupPath</span> <span class="o">=</span> <span class="s1">&#39;groups.&#39;</span> <span class="o">+</span> <span class="nx">params</span><span class="p">.</span><span class="nx">groupName</span>
+</span><span class='line'>    <span class="p">,</span> <span class="nx">todosQuery</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s1">&#39;todos&#39;</span><span class="p">).</span><span class="nx">where</span><span class="p">(</span><span class="s1">&#39;group&#39;</span><span class="p">).</span><span class="nx">equals</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">groupName</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">model</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">groupPath</span><span class="p">,</span> <span class="nx">todosQuery</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this example, a query is used to limit a client&#8217;s subscription to only <code>todos</code> that have a property <code>group</code> with the same name as the current group. The query syntax supports most common query operations, such as key lookups, numerical comparisons, sorts, and limits. See <a href="http://derbyjs.com/#queries">the documentation</a> for more info.</p>
+
+<h2>A quick note on syntax changes</h2>
+
+<p>This release changes a number of items in Derby&#8217;s template syntax:</p>
+
+<ul>
+<li>Bound template tags used to be wrapped in double or triple parentheses instead of curly braces. Instead, they are now wrapped in single curly braces. Now a bound variable looks like <code>&lt;input value="{.text}"&gt;</code>. All of the parentheses started to get confusing with the addition of view helper functions, and the new syntax is much easier on the eyes. To output a left curly brace in HTML, use the entity <code>&amp;#123;</code>. Conveniently, it&#8217;s an easy one to remember.</li>
+<li>Instead of triple curlies, there is now an unescaped keyword. For example, what was previously <code>{{{rawHtml}}}</code> is now <code>{{unescaped rawHtml}}</code> and what was previously <code>(((rawHtml)))</code> is now <code>{unescaped rawHtml}</code>. This is more readable and keeps the braces consistent.</li>
+<li>Also for readability, path aliases in templates must now be proceeded by an <code>as</code> keyword. For example, <code>{{#each items as :item}}</code>.</li>
+<li>Handlebars-style partials have been removed in favor of a more powerful component system that looks like custom HTML tags. More on this below, but what was previously <code>{{&gt; nav}}</code> is now <code>&lt;app:nav&gt;</code>. Inside of HTML attribute values, developers should now use view helper functions instead of partials.</li>
+<li>Triple curly braces have been re-purposed for the much more awesome function of macro template tags inside of components. More on this below.</li>
+<li>The hacky <code>disabled="!((active))"</code> syntax that was previously supported only for boolean HTML attributes has been removed in favor of the built-in <code>not</code> helper function. This should now be <code>disabled="{not(active)}"</code>.</li>
+</ul>
+
+
+<p>We realize changes like this are annoying, and we don&#8217;t expect to be making any more major changes to the template syntax after this. We have some additional features planned for components, but they should be backwards compatible with this current release.</p>
+
+<h2>Sometimes views need a little help(er)</h2>
+
+<p>We follow the logic-less templating approach of Handlebars and Mustache, which helps to better organize controller code. However, we found that we kept having to add data to the model just for the purpose of binding computed values. This got tedious, and didn&#8217;t work well with computed properties of each item in a list.</p>
+
+<p>Therefore, we added reactive view helper functions. These functions get evaluted when rendering as well as whenever their inputs change. In addition, they can work as both getters and setters. This is super useful when binding to form elements, such as selected options or radio buttons:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Remove all whitespace from a string</span>
+</span><span class='line'><span class="nx">view</span><span class="p">.</span><span class="nx">fn</span><span class="p">(</span><span class="s1">&#39;unspace&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{{#with home}}
+</span><span class='line'>  <span class="nt">&lt;h1</span> <span class="na">style=</span><span class="s">&quot;color:{unspace(.title.color)}&quot;</span><span class="nt">&gt;</span>Welcome in {.title.color}!<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;select&gt;</span>
+</span><span class='line'>    {#each .colors}
+</span><span class='line'>      <span class="nt">&lt;option</span> <span class="na">selected=</span><span class="s">&quot;{equal(.name, home.title.color)}&quot;</span><span class="nt">&gt;</span>{{.name}}<span class="nt">&lt;/option&gt;</span>
+</span><span class='line'>    {/}
+</span><span class='line'>  <span class="nt">&lt;/select&gt;</span>
+</span><span class='line'>{{/}}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are two default view helper functions, <code>equal</code> and <code>not</code>, that are aways available. It is also possible to define custom view helper functions, such as <code>unspace</code> in the example above. The <code>equal</code> and <code>not</code> functions can act as both getters and setters. In this example, when the page renders, the option with a name equal to the value of <code>home.title.color</code> will have a <code>selected</code> attribute and the others will not. When the user selects a different option from the drop down, <code>home.title.color</code> will be set to the value of the option that is now selected.</p>
+
+<h2>Components are the new <s>partials</s> hotness</h2>
+
+<p>Previously, Derby templates only supported simple partials like Handlebars. We have replaced partials with a much more powerful concept of components that can take attribute arguments and even different HTML content. Components are defined in the same way that partials were previously defined, but they are included in other templates like custom HTML tags. When Derby parses the templates, it replaces these custom component tags with the components&#8217; contents, and the custom tags do not appear in the HTML output.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;&lt;app:greeting&gt;&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;greeting:&gt;</span>
+</span><span class='line'>  Hello!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For now, all component includes start with the namespace <code>app</code>. This prevents potential conflicts with normal HTML tags, and it makes it clear which HTML tags are components that should be replaced. In the future, it will be possible to define component libraries with their own namespaces.</p>
+
+<p>Literal values or variable values can be passed to components. These component attributes are available through &#8220;macro&#8221; template tags, which have triple curly braces. Macro template tags only reference component attribute names, and regular template tags (with one or two curly braces) only reference names from the model or context object. It is possible to use macro template tags to conditionally render any HTML content or other template tags.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;&lt;app:greeting</span> <span class="na">message=</span><span class="s">&quot;Hello&quot;</span> <span class="na">to=</span><span class="s">&quot;{_user.name}&quot;</span><span class="nt">&gt;&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;greeting:&gt;</span>
+</span><span class='line'>  {{{#if to}}}
+</span><span class='line'>    {{{message}}}, {{{to}}}!
+</span><span class='line'>  {{{else}}}
+</span><span class='line'>    {{{message}}}!
+</span><span class='line'>  {{{/}}}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>produces the same output as:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>
+</span><span class='line'>    {#if _user.name}
+</span><span class='line'>      Hello, {_user.name}!
+</span><span class='line'>    {else}
+</span><span class='line'>      Hello!
+</span><span class='line'>    {/}
+</span><span class='line'>  <span class="nt">&lt;/h1&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By default, all components are void HTML elements. This means that they must only have an opening tag and no closing tag, just like the <code>&lt;img&gt;</code> and <code>&lt;br&gt;</code> elements. A component can be defined as nonvoid, which means that it must have both a starting and a closing tag. Nonvoid components have access to a special <code>content</code> macro that makes it possible to pass HTML content to the component. For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  Welcome!
+</span><span class='line'>  <span class="nt">&lt;app:fancyButton&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;b&gt;</span>Click me {{#if isUrgent}}now!{{/}}<span class="nt">&lt;/b&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/app:fancyButton&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;fancyButton:</span> <span class="na">nonvoid</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">&quot;fancy&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    {{{content}}}
+</span><span class='line'>  <span class="nt">&lt;/button&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>produces the same output as:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;Body:&gt;</span>
+</span><span class='line'>  Welcome!
+</span><span class='line'>  <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">&quot;fancy&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;b&gt;</span>Click me {{#if isUrgent}}now!{{/}}<span class="nt">&lt;/b&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/button&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Components make it possible to write more expressive templates and reduce repeated boilerplate. We will continue to extend components and add support for creating reusable component libraries.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nate Smith and Brian Noguchi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-13T22:19:00-07:00" pubdate data-updated="true">Apr 13<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='//categories/release/'>release</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0/" data-via="derbyjs" data-counturl="http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/03/25/derby-v0-dot-1-10/" title="Previous Post: Derby v0.1.10">&laquo; Derby v0.1.10</a>
+      
+      
+        <a class="basic-alignment right" href="/2012/04/14/our-take-on-derby-vs-meteor/" title="Next Post: Our take on Derby vs. Meteor">Our take on Derby vs. Meteor &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/03/26/getting-derby-ready-for-prime-time/">Getting Derby ready for prime time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/">Now hiring: Join the Derby core team at Lever</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/19/derby-v0-dot-3-1/">Derby v0.3.1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/14/our-take-on-derby-vs-meteor/">Our take on Derby vs. Meteor</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/13/derby-v0-dot-3-0/">Derby v0.3.0</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("derbyjs", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/derbyjs" class="twitter-follow-button" data-show-count="false">Follow @derbyjs</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nate Smith and Brian Noguchi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'derbyblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0/';
+        var disqus_url = 'http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: release | Derby blog]]></title>
+  <link href="http://blog.derbyjs.com///categories/release/atom.xml" rel="self"/>
+  <link href="http://blog.derbyjs.com//"/>
+  <updated>2013-03-26T20:53:42-07:00</updated>
+  <id>http://blog.derbyjs.com//</id>
+  <author>
+    <name><![CDATA[Nate Smith and Brian Noguchi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Derby v0.3.1]]></title>
+    <link href="http://blog.derbyjs.com//2012/04/19/derby-v0-dot-3-1/"/>
+    <updated>2012-04-19T18:22:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2012/04/19/derby-v0-dot-3-1</id>
+    <content type="html"><![CDATA[<p></p>
+
+<p>Derby v0.3.1 is out with support for LESS compilation, Express 3, easier to install examples, and a number of bug fixes.</p>
+
+<h2>LESS</h2>
+
+<p>Thanks to contributions from <a href="https://github.com/xcoderzach">Zach Smith</a>, Derby will now compile styles written in LESS as well as Stylus! We're super excited to have new contributors, and it is great to see people using and improving upon the framework!</p>
+
+<h2>Express 3</h2>
+
+<p>We have updated Derby to use <a href="http://tjholowaychuk.com/post/21162751096/express-3-0-0-alpha1">Express 3</a>, which has recently been released in alpha. Express 3 is different in a number of small ways, so we wanted to get new projects started with the current APIs as soon as possible.</p>
+
+<h2>Easier to get examples installed</h2>
+
+<p>A number of people ran into issues running the derby examples on their machines, because of how they were included. They are now in a separate <a href="https://github.com/codeparty/derby-examples">GitHub repo</a> with much better installation instructions. Hopefully we have resolved all of the issues running Derby on Windows as well.</p>
+
+<p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Derby v0.3.0]]></title>
+    <link href="http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0/"/>
+    <updated>2012-04-13T22:19:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2012/04/13/derby-v0-dot-3-0</id>
+    <content type="html"><![CDATA[<p></p>
+
+<p>This is a big release for us---Derby finally has support for automatic persistence! Initially we have support for MongoDB, and it will be possible to swap in anything else through use of a different adapter.</p>
+
+<p>In addition, we have added support for subscriptions to queries and made big upgrades to the power of the HTML templates. Templates now support reactive helper functions, and we have replaced partials with more flexible HTML components.</p>
+
+<p>By the way, you may have noticed that we skipped v0.2. We are following the common convention <code>major.minor.patchlevel</code> where odd minor versions are unstable. Node.js, the Linux kernel, Redis, and lots of other projects follow this convention. Since odd minor versions are unstable, patch level versions will likely break APIs. Patch level updates to even numbered versions will only include bug fixes. The first such stable version will likely be v0.4.0.</p>
+
+<h2>Want some database with that realtime syncing?</h2>
+
+<p><code>javascript
+// No persistence
+app.createStore({
+  listen: server
+})
+</code></p>
+
+<p>``` javascript
+// Persistence-a-go-go
+derby.use(require('racer-db-mongo'))</p>
+
+<p>app.createStore({
+  listen:  server
+, db:      {type: 'Mongo', uri: 'mongodb://localhost/database'}
+})
+```</p>
+
+<p>No, seriously, it is two lines of code.</p>
+
+<p>All of the db adapters will be released as separate npm modules. As with all npm modules, you need to add a dependency to your <code>package.json</code> file and then re-run <code>$ npm install</code> in order to require it.</p>
+
+<h3>Behind the scenes</h3>
+
+<p>Racer (the realtime engine powering Derby's models) describes all data mutations in terms of a method, path, and some arguments. These methods, e.g. <code>set</code>, <code>push</code>, etc., can be thought of like the HTTP verbs, such as <code>POST</code>, <code>PUT</code>, and <code>DELETE</code>. Model paths are like URLs to a specific piece of data, and the method arguments are like the content of a request. Just as a REST API can be defined in terms of HTTP verbs and URLs, Racer has a routing system for mutation methods and paths.</p>
+
+<p>By default, Racer uses a basic in-memory datastore that defines these store routes for each mutation method and path pattern. Database adapters like the Mongo adapter do the same thing, implementing each method in a database-specifc way. Because these routes can handle any method on any path, no additional server code needs to be written in order to persist data.</p>
+
+<p>It is possible to add custom store routes for specifc paths if an application connects to an external API. Such routes could be provided as a generic plugin for Racer that makes it dead simple for other developers to use an API with Racer's automatically synced models. More documentaion on store routes will be coming soon.</p>
+
+<h3>So where is the data saved?</h3>
+
+<p>Racer paths are translated into database collections and documents using a natural mapping:</p>
+
+<p><code>text
+collection.documentId.document
+</code></p>
+
+<p>All synced paths (anything that doesn't start with an underscore) must follow this convention. In other words, all model data stored at the first two path segments should be an object and not a string, number, or other primitive type.</p>
+
+<p>``` javascript
+// Examples:
+model.set('todos.id_0.completed', true)
+model.set('rooms.lobby.messages.5.text', 'Call me')
+model.set('meta', {
+  app: {</p>
+
+<pre><code>title: 'Hi there'
+</code></pre>
+
+<p>  , author: 'Erik Mathers'
+  }
+})</p>
+
+<p>// The first and second segments in root paths must be objects
+model.set('title', 'Hi there')      // WARNING INVALID
+model.set('app.title', 'Hi there')  // WARNING INVALID</p>
+
+<p>// However, any type may be stored at any private path, which
+// starts with an underscore and is not synced back to the server
+model.set('_title', 'Hi there')     // OK
+```</p>
+
+<p>The document's id (the second path segment) is automatically added as the <code>id</code> property of the document, so that it can be retrieved from the datastore.</p>
+
+<p>``` javascript
+model.set('meta', {
+  app: {</p>
+
+<pre><code>title: 'Hi there'
+</code></pre>
+
+<p>  , author: 'Erik Mathers'
+  }
+})
+console.log(model.get('meta.app'))
+// Logs: {
+//   id: 'app'
+// , title: 'Hi there'
+// , author: 'Erik Mathers'
+// }
+```</p>
+
+<h2>Queries --- we do 'em live!</h2>
+
+<p>Racer has always had granular PubSub based on path patterns. In addition, it is now possible to specify subscriptions in terms of a more expressive query syntax. These queries are similar to most database queries, except that they can automatically detect when new data matches and then sync that data to all appropriate clients.</p>
+
+<p>``` javascript
+get('/:groupName', function(page, model, params) {
+  var groupPath = 'groups.' + params.groupName</p>
+
+<pre><code>, todosQuery = model.query('todos').where('group').equals(params.groupName)
+</code></pre>
+
+<p>  model.subscribe(groupPath, todosQuery, function() {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>  })
+})
+```</p>
+
+<p>In this example, a query is used to limit a client's subscription to only <code>todos</code> that have a property <code>group</code> with the same name as the current group. The query syntax supports most common query operations, such as key lookups, numerical comparisons, sorts, and limits. See <a href="http://derbyjs.com/#queries">the documentation</a> for more info.</p>
+
+<h2>A quick note on syntax changes</h2>
+
+<p>This release changes a number of items in Derby's template syntax:</p>
+
+<ul>
+<li>Bound template tags used to be wrapped in double or triple parentheses instead of curly braces. Instead, they are now wrapped in single curly braces. Now a bound variable looks like <code>&lt;input value="{.text}"&gt;</code>. All of the parentheses started to get confusing with the addition of view helper functions, and the new syntax is much easier on the eyes. To output a left curly brace in HTML, use the entity <code>&amp;#123;</code>. Conveniently, it's an easy one to remember.</li>
+<li>Instead of triple curlies, there is now an unescaped keyword. For example, what was previously <code>{{{rawHtml}}}</code> is now <code>{{unescaped rawHtml}}</code> and what was previously <code>(((rawHtml)))</code> is now <code>{unescaped rawHtml}</code>. This is more readable and keeps the braces consistent.</li>
+<li>Also for readability, path aliases in templates must now be proceeded by an <code>as</code> keyword. For example, <code>{{#each items as :item}}</code>.</li>
+<li>Handlebars-style partials have been removed in favor of a more powerful component system that looks like custom HTML tags. More on this below, but what was previously <code>{{&gt; nav}}</code> is now <code>&lt;app:nav&gt;</code>. Inside of HTML attribute values, developers should now use view helper functions instead of partials.</li>
+<li>Triple curly braces have been re-purposed for the much more awesome function of macro template tags inside of components. More on this below.</li>
+<li>The hacky <code>disabled="!((active))"</code> syntax that was previously supported only for boolean HTML attributes has been removed in favor of the built-in <code>not</code> helper function. This should now be <code>disabled="{not(active)}"</code>.</li>
+</ul>
+
+
+<p>We realize changes like this are annoying, and we don't expect to be making any more major changes to the template syntax after this. We have some additional features planned for components, but they should be backwards compatible with this current release.</p>
+
+<h2>Sometimes views need a little help(er)</h2>
+
+<p>We follow the logic-less templating approach of Handlebars and Mustache, which helps to better organize controller code. However, we found that we kept having to add data to the model just for the purpose of binding computed values. This got tedious, and didn't work well with computed properties of each item in a list.</p>
+
+<p>Therefore, we added reactive view helper functions. These functions get evaluted when rendering as well as whenever their inputs change. In addition, they can work as both getters and setters. This is super useful when binding to form elements, such as selected options or radio buttons:</p>
+
+<p><code>js
+// Remove all whitespace from a string
+view.fn('unspace', function(value) {
+  return value &amp;&amp; value.replace(/\s/g, '')
+})
+</code></p>
+
+<p>``` html
+{{#with home}}
+  <h1 style="color:{unspace(.title.color)}">Welcome in {.title.color}!</h1>
+  <select></p>
+
+<pre><code>{#each .colors}
+  &lt;option selected="{equal(.name, home.title.color)}"&gt;{{.name}}&lt;/option&gt;
+{/}
+</code></pre>
+
+<p>  </select>
+{{/}}
+```</p>
+
+<p>There are two default view helper functions, <code>equal</code> and <code>not</code>, that are aways available. It is also possible to define custom view helper functions, such as <code>unspace</code> in the example above. The <code>equal</code> and <code>not</code> functions can act as both getters and setters. In this example, when the page renders, the option with a name equal to the value of <code>home.title.color</code> will have a <code>selected</code> attribute and the others will not. When the user selects a different option from the drop down, <code>home.title.color</code> will be set to the value of the option that is now selected.</p>
+
+<h2>Components are the new <s>partials</s> hotness</h2>
+
+<p>Previously, Derby templates only supported simple partials like Handlebars. We have replaced partials with a much more powerful concept of components that can take attribute arguments and even different HTML content. Components are defined in the same way that partials were previously defined, but they are included in other templates like custom HTML tags. When Derby parses the templates, it replaces these custom component tags with the components' contents, and the custom tags do not appear in the HTML output.</p>
+
+<p>``` html
+&lt;Body:>
+  <h1>&lt;app:greeting></h1></p>
+
+<p>&lt;greeting:>
+  Hello!
+```</p>
+
+<p>For now, all component includes start with the namespace <code>app</code>. This prevents potential conflicts with normal HTML tags, and it makes it clear which HTML tags are components that should be replaced. In the future, it will be possible to define component libraries with their own namespaces.</p>
+
+<p>Literal values or variable values can be passed to components. These component attributes are available through "macro" template tags, which have triple curly braces. Macro template tags only reference component attribute names, and regular template tags (with one or two curly braces) only reference names from the model or context object. It is possible to use macro template tags to conditionally render any HTML content or other template tags.</p>
+
+<p>``` html
+&lt;Body:>
+  <h1>&lt;app:greeting message="Hello" to="{_user.name}"></h1></p>
+
+<p>&lt;greeting:>
+  {{{#if to}}}</p>
+
+<pre><code>{{{message}}}, {{{to}}}!
+</code></pre>
+
+<p>  {{{else}}}</p>
+
+<pre><code>{{{message}}}!
+</code></pre>
+
+<p>  {{{/}}}
+```</p>
+
+<p>produces the same output as:</p>
+
+<p>``` html
+&lt;Body:>
+  <h1></p>
+
+<pre><code>{#if _user.name}
+  Hello, {_user.name}!
+{else}
+  Hello!
+{/}
+</code></pre>
+
+<p>  </h1>
+```</p>
+
+<p>By default, all components are void HTML elements. This means that they must only have an opening tag and no closing tag, just like the <code>&lt;img&gt;</code> and <code>&lt;br&gt;</code> elements. A component can be defined as nonvoid, which means that it must have both a starting and a closing tag. Nonvoid components have access to a special <code>content</code> macro that makes it possible to pass HTML content to the component. For example:</p>
+
+<p>``` html
+&lt;Body:>
+  Welcome!
+  &lt;app:fancyButton></p>
+
+<pre><code>&lt;b&gt;Click me {{#if isUrgent}}now!{{/}}&lt;/b&gt;
+</code></pre>
+
+<p>  &lt;/app:fancyButton></p>
+
+<p>&lt;fancyButton: nonvoid>
+  <button class="fancy"></p>
+
+<pre><code>{{{content}}}
+</code></pre>
+
+<p>  </button>
+```</p>
+
+<p>produces the same output as:</p>
+
+<p>``` html
+&lt;Body:>
+  Welcome!
+  <button class="fancy"></p>
+
+<pre><code>&lt;b&gt;Click me {{#if isUrgent}}now!{{/}}&lt;/b&gt;
+</code></pre>
+
+<p>  </button>
+```</p>
+
+<p>Components make it possible to write more expressive templates and reduce repeated boilerplate. We will continue to extend components and add support for creating reusable component libraries.</p>
+
+<p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Derby v0.1.10]]></title>
+    <link href="http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10/"/>
+    <updated>2012-03-25T19:34:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2012/03/25/derby-v0-dot-1-10</id>
+    <content type="html"><![CDATA[<p></p>
+
+<p>This release significantly improves templates and event bindings. It also fixes a ton of bugs, so get on it!</p>
+
+<h2>Namespaces to the rescue!</h2>
+
+<p>Creating apps with many pages is now simple thanks to the addition of <a href="http://derbyjs.com/#importing_templates">namespaced templates</a>. The new template import syntax makes it easy to break up templates into multiple pages. Then, a namespace can be passed to <code>view.render()</code> to specify which page to render. Namespaces could also represent different application states or be used to break up really complex pages into multiple independent sets of templates.</p>
+
+<h4>home.html</h4>
+
+<p><code>html
+&lt;Body:&gt;
+  Welcome to the home page
+</code></p>
+
+<h4>contact.html</h4>
+
+<p><code>html
+&lt;Body:&gt;
+  Give us a call sometime
+</code></p>
+
+<h4>index.html</h4>
+
+<p>``` html
+&lt;import: src="home">
+&lt;import: src="contact"></p>
+
+<p>&lt;Header:>
+  <h1>Awesome town</h1>
+```</p>
+
+<h4>index.js</h4>
+
+<p>``` javascript
+get('/', function(page) {
+  page.render('home')
+})</p>
+
+<p>get('/contact-us', function(page) {
+  page.render('contact')
+})
+```</p>
+
+<h2>Growing out the Mustache</h2>
+
+<p>Derby templates have moved from <a href="http://mustache.github.com/mustache.5.html">Mustache</a> style conditional blocks to <a href="http://handlebarsjs.com/">Handlebars</a> style. This is a relatively minor change, but we think it makes templates more readable. This is helpful for those less familiar with Mustache syntax and for reading templates that others have written.</p>
+
+<p>What was previously:</p>
+
+<p>``` html
+&lt;Body:>
+  {{#users}}</p>
+
+<pre><code>&lt;h3&gt;{{name}}&lt;/h3&gt;
+{{#active}}
+  Thanks for your active support!
+{{^}}
+  We'd love to see you more often.
+{{/}}
+</code></pre>
+
+<p>  {{/}}
+```</p>
+
+<p>Now is written:</p>
+
+<p>``` html
+&lt;Body:>
+  {{#each users}}</p>
+
+<pre><code>&lt;h3&gt;{{name}}&lt;/h3&gt;
+{{#if active}}
+  Thanks for your active support!
+{{else}}
+  We'd love to see you more often.
+{{/}}
+</code></pre>
+
+<p>  {{/}}
+```</p>
+
+<p>For more detail, see <a href="http://derbyjs.com/#template_syntax">Template Syntax</a> in the docs.</p>
+
+<h2>Event bubbling done right</h2>
+
+<p>Derby makes <a href="http://derbyjs.com/#dom_event_binding">binding to DOM events</a> fast and easy via the <code>x-bind</code> attribute in templates. Previously, events only were detected when they were the target. Now events bubble up to parent elements, and they emit the event object with a reference to the target as well as the element that was bound via <code>x-bind</code>.</p>
+
+<p>Unlike the <a href="https://developer.mozilla.org/en/DOM/event">DOM Event Model</a>, the event is only called on the first handler that matches. It will only continue bubbling if a <code>next()</code> function is called, similar to how routes can pass control to the next route. This is a more efficient and less error-prone way of bubbling than requiring listeners to call a method like <code>e.stopPropogation()</code>.</p>
+
+<p>``` html</p>
+
+<!-- The root element will handle a click anywhere in the window. -->
+
+
+<p>&lt;Root:>
+  <html x-bind="click: deselect"></p>
+
+<p>&lt;Body:>
+  {{#each items}}</p>
+
+<pre><code>&lt;div x-bind="click: select"&gt;
+  &lt;h3&gt;{{name}}&lt;/h3&gt;
+  &lt;img src="{{image}}"&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>  {{/}}
+```</p>
+
+<p>``` javascript
+exports.select = function(e, el, next) {
+  var id = model.at(el).get('id')
+  selectedId.set(id)
+}</p>
+
+<p>// There is no need to check the target of the click event, since it
+// will only bubble up if the click was outside of one of the items.
+exports.deselect = function() {
+  selectedId.del()
+}
+```</p>
+
+<h2>Even the error messages are fast</h2>
+
+<p>For faster development, we added live-updating as files are edited in the last release. However, any errors would still kill the server and require a manual restart. Template and CSS error handling is now much improved, and errors with either of these are displayed in the browser as files are saved. Even better, the page updates and the error message disappears as soon as the error is corrected.</p>
+
+<p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Derby v0.1.9]]></title>
+    <link href="http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9/"/>
+    <updated>2012-03-09T10:31:00-08:00</updated>
+    <id>http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9</id>
+    <content type="html"><![CDATA[<p>The latest release of Derby includes easier installation without Redis; automatic reloading of scripts, templates, and styles; better subscription functionality; and lots of bug fixes.</p>
+
+<h2>Modularity FTW</h2>
+
+<p>In preparation for adding persistent storage, we have finished a <em>major</em> refactor of Racer, the realtime model engine for Derby. The latest release includes the ability to plugin various functionality, and there will be separate plugins for different database, journal, and PubSub adapters. We already have preliminary plugins for a MongoDB database, Redis journal, and Redis PubSub, though we are still working on some bugs.</p>
+
+<p>Another awesome benefit of the refactor is that Redis is no longer required by default, and you can now start playing around with Derby after a simple <code>npm install -g derby</code>.</p>
+
+<h2>Command-S and kick back</h2>
+
+<p>Thanks to <a href="https://github.com/LearnBoost/up">Up</a> and Node.js v0.6's <a href="http://nodejs.org/api/fs.html#fs_fs_watchfile_filename_options_listener"><code>fs.watchFile</code></a>, Derby now supports automatic page updates in development. Derby's new <code>derby.run</code> method starts a server via Up and reloads the server whenever any script files in the project are saved.</p>
+
+<p><code>javascript
+require('derby').run(__dirname + '/lib/server')
+</code></p>
+
+<p>In development, the browser will automatically reload when it reconnects and notices that the server has a new version. Simply generate a new project via</p>
+
+<p><code>
+$ derby new project-name
+</code></p>
+
+<p>and it will be set up to use this feature.</p>
+
+<p>In addition, saving style files will automatically recompile CSS and update connected browsers. Saving template files will re-render the page in connected browsers. Get a big monitor and tweak those styles like it's nobody's business!</p>
+
+<h2>Subscribe -- now with less whack!</h2>
+
+<p>The <a href="http://derbyjs.com/#subscription"><code>model.subscribe()</code></a> method has been simplified to take advantage of <a href="http://derbyjs.com/#scoped_models">scoped models</a>. Previously, the format for subscribe was the somewhat wacky:</p>
+
+<p><code>javascript
+// WARNING: Old API
+model.subscribe({_room: 'rooms.' + roomName}, function() {
+  console.log(model.get('_room.stuff'))
+})
+</code></p>
+
+<p>The new format is more clear:</p>
+
+<p><code>javascript
+model.subscribe('rooms.' + roomName, function(err, room) {
+  model.ref('_room', room)
+  console.log(room.get('stuff'))
+})
+</code></p>
+
+<p>There is also a new method <code>model.fetch()</code>, which has the same format as subscribe. However, it only gets data from the store and sets it in the model. It does not create any subscriptions to ongoing updates, and it does not require the use of PubSub.</p>
+
+<p>Subscribe and fetch will also support queries, though the implementation is still being finalized.</p>
+
+<h2>Seriously, we are going support MongoDB soon</h2>
+
+<p>I know this has been a long time coming---persistence is just around the corner. We have it mostly working with the Todos example, but we are still working through some bugs. Note that adding persistence will simply require configuring the store in the server file. It will look something like:</p>
+
+<p><code>javascript
+// No persistence
+app.createStore({ listen: server })
+</code></p>
+
+<p>``` javascript
+// Persistence-a-go-go</p>
+
+<p>derby
+  .use(require('racer-journal-redis'))
+  .use(require('racer-pubsub-redis'))
+  .use(require('racer-db-mongo'))</p>
+
+<p>app.createStore({
+  listen:  server
+, journal: {type: 'Redis'}
+, pubSub:  {type: 'Redis'}
+, db:      {type: 'Mongo', uri: 'mongodb://localhost/database'}
+})
+```</p>
+
+<p>It shouldn't require any changes to your application code, and it won't affect the model API, so go ahead and prototype with the current version of Derby.</p>
+
+<p>Note that if you try out this out now, bad things will happen. But hey, the code is on the Internet, so someone is obviously going to do it. Just know that it isn't supposed to work yet.</p>
+]]></content>
+  </entry>
+  
+</feed>

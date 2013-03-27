@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Derby v0.1.9 - Derby blog</title>
+  <meta name="author" content="Nate Smith and Brian Noguchi">
+
+  
+  <meta name="description" content="The latest release of Derby includes easier installation without Redis; automatic reloading of scripts, templates, and styles; better subscription &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Derby blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+  article > footer { padding-bottom: 0 }
+</style>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26625318-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Derby blog</a></h1>
+  
+    <h2>Full-stack MVC framework making it easy to write realtime, collaborative applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.derbyjs.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="http://derbyjs.com/">derbyjs.com</a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="https://github.com/codeparty/derby">Github</a></li>
+  <li><a href="http://twitter.com/derbyjs">Twitter</a></li>
+  <li><a href="http://groups.google.com/group/derbyjs">Google Groups</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Derby v0.1.9</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-09T10:31:00-08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The latest release of Derby includes easier installation without Redis; automatic reloading of scripts, templates, and styles; better subscription functionality; and lots of bug fixes.</p>
+
+<h2>Modularity FTW</h2>
+
+<p>In preparation for adding persistent storage, we have finished a <em>major</em> refactor of Racer, the realtime model engine for Derby. The latest release includes the ability to plugin various functionality, and there will be separate plugins for different database, journal, and PubSub adapters. We already have preliminary plugins for a MongoDB database, Redis journal, and Redis PubSub, though we are still working on some bugs.</p>
+
+<p>Another awesome benefit of the refactor is that Redis is no longer required by default, and you can now start playing around with Derby after a simple <code>npm install -g derby</code>.</p>
+
+<h2>Command-S and kick back</h2>
+
+<p>Thanks to <a href="https://github.com/LearnBoost/up">Up</a> and Node.js v0.6&#8217;s <a href="http://nodejs.org/api/fs.html#fs_fs_watchfile_filename_options_listener"><code>fs.watchFile</code></a>, Derby now supports automatic page updates in development. Derby&#8217;s new <code>derby.run</code> method starts a server via Up and reloads the server whenever any script files in the project are saved.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;derby&#39;</span><span class="p">).</span><span class="nx">run</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/lib/server&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In development, the browser will automatically reload when it reconnects and notices that the server has a new version. Simply generate a new project via</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span> <span class="nx">derby</span> <span class="k">new</span> <span class="nx">project</span><span class="o">-</span><span class="nx">name</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and it will be set up to use this feature.</p>
+
+<p>In addition, saving style files will automatically recompile CSS and update connected browsers. Saving template files will re-render the page in connected browsers. Get a big monitor and tweak those styles like it&#8217;s nobody&#8217;s business!</p>
+
+<h2>Subscribe &#8211; now with less whack!</h2>
+
+<p>The <a href="http://derbyjs.com/#subscription"><code>model.subscribe()</code></a> method has been simplified to take advantage of <a href="http://derbyjs.com/#scoped_models">scoped models</a>. Previously, the format for subscribe was the somewhat wacky:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// WARNING: Old API</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">({</span><span class="nx">_room</span><span class="o">:</span> <span class="s1">&#39;rooms.&#39;</span> <span class="o">+</span> <span class="nx">roomName</span><span class="p">},</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;_room.stuff&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The new format is more clear:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;rooms.&#39;</span> <span class="o">+</span> <span class="nx">roomName</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">room</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">model</span><span class="p">.</span><span class="nx">ref</span><span class="p">(</span><span class="s1">&#39;_room&#39;</span><span class="p">,</span> <span class="nx">room</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">room</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;stuff&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There is also a new method <code>model.fetch()</code>, which has the same format as subscribe. However, it only gets data from the store and sets it in the model. It does not create any subscriptions to ongoing updates, and it does not require the use of PubSub.</p>
+
+<p>Subscribe and fetch will also support queries, though the implementation is still being finalized.</p>
+
+<h2>Seriously, we are going support MongoDB soon</h2>
+
+<p>I know this has been a long time coming&#8212;persistence is just around the corner. We have it mostly working with the Todos example, but we are still working through some bugs. Note that adding persistence will simply require configuring the store in the server file. It will look something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// No persistence</span>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">createStore</span><span class="p">({</span> <span class="nx">listen</span><span class="o">:</span> <span class="nx">server</span> <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Persistence-a-go-go</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">derby</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;racer-journal-redis&#39;</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;racer-pubsub-redis&#39;</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;racer-db-mongo&#39;</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">createStore</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">listen</span><span class="o">:</span>  <span class="nx">server</span>
+</span><span class='line'><span class="p">,</span> <span class="nx">journal</span><span class="o">:</span> <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Redis&#39;</span><span class="p">}</span>
+</span><span class='line'><span class="p">,</span> <span class="nx">pubSub</span><span class="o">:</span>  <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Redis&#39;</span><span class="p">}</span>
+</span><span class='line'><span class="p">,</span> <span class="nx">db</span><span class="o">:</span>      <span class="p">{</span><span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Mongo&#39;</span><span class="p">,</span> <span class="nx">uri</span><span class="o">:</span> <span class="s1">&#39;mongodb://localhost/database&#39;</span><span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It shouldn&#8217;t require any changes to your application code, and it won&#8217;t affect the model API, so go ahead and prototype with the current version of Derby.</p>
+
+<p>Note that if you try out this out now, bad things will happen. But hey, the code is on the Internet, so someone is obviously going to do it. Just know that it isn&#8217;t supposed to work yet.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nate Smith and Brian Noguchi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-09T10:31:00-08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='//categories/release/'>release</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9/" data-via="derbyjs" data-counturl="http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/03/09/welcome-to-the-derby-blog/" title="Previous Post: Welcome to the Derby blog!">&laquo; Welcome to the Derby blog!</a>
+      
+      
+        <a class="basic-alignment right" href="/2012/03/25/derby-v0-dot-1-10/" title="Next Post: Derby v0.1.10">Derby v0.1.10 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/03/26/getting-derby-ready-for-prime-time/">Getting Derby ready for prime time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/">Now hiring: Join the Derby core team at Lever</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/19/derby-v0-dot-3-1/">Derby v0.3.1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/14/our-take-on-derby-vs-meteor/">Our take on Derby vs. Meteor</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/04/13/derby-v0-dot-3-0/">Derby v0.3.0</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("derbyjs", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/derbyjs" class="twitter-follow-button" data-show-count="false">Follow @derbyjs</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nate Smith and Brian Noguchi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'derbyblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9/';
+        var disqus_url = 'http://blog.derbyjs.com//2012/03/09/derby-v0-dot-1-9/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
