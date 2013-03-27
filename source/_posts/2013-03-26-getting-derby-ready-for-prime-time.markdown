@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that is a bug. In addition, we believe that web apps shouldn't feel inferior to their desktop or mobile counterparts&mdash;they should load super fast, respond to interaction instantly, and work offline without interruption.
+At Lever, we believe that all web apps should be realtime. When you are looking at a page and it no longer reflects what someone else is seeing, that is a bug. In addition, we believe that web apps shouldn't feel inferior to their desktop or mobile counterparts&mdash;they should load super quickly, respond to interaction instantly, and work offline without interruption.
 
 We are creating Derby and Racer, intending to build the best technology to power the next generation of innovative web applications. We also aim to make their development accessible for individual developers, startups, and large teams.
 
