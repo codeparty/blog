@@ -26,7 +26,7 @@ We are now building a next generation application for companies to better manage
 
 ## Establishing a solid foundation
 
-As with most new projects, we couldn't foresee everything that would and wouldn't work well. We wrote a whole lot of features and came up with a many new concepts as we created Racer and Derby. Many of these new ideas are fantastic, and many of them didn't work well or made the implementation too complex. We also didn't write the current code to scale across multiple processes, since our focus was on innovating at the API level.
+As with most new projects, we couldn't foresee everything that would and wouldn't work well. We wrote a whole lot of features and came up with a many new concepts as we created Racer and Derby. Many of these new ideas were fantastic, and many of them didn't work well or made the implementation too complex. We also didn't write the first version of the code to scale across multiple processes, since our focus was on innovating at the API level.
 
 The next step in our development is simplifying down to the good ideas and making a horizontally scalable system. At the same time, we will be coordinating our work on ShareJS and Racer to better both projects.
 
