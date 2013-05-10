@@ -12,4 +12,4 @@ We are still polishing off a few features, but want to show off an early preview
 
 {% youtube uDzME15UxVM %}
 
-The new version is still undergoing rapid development and needs lots more testing, but you can watch our progress and play around with it by checking out the [Racer 0.5 branch]() on GitHub. Derby has not yet been updated to work with the new Racer API, so you can't use Racer 0.5 with Derby just yet.
+The new version is still undergoing rapid development and needs lots more testing, but you can watch our progress and play around with it by checking out the [Racer 0.5 branch](https://github.com/codeparty/racer/tree/0.5) on GitHub. Derby has not yet been updated to work with the new Racer API, so you can't use Racer 0.5 with Derby just yet.
