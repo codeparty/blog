@@ -4,7 +4,7 @@
   <title><![CDATA[Derby blog]]></title>
   <link href="http://blog.derbyjs.com//atom.xml" rel="self"/>
   <link href="http://blog.derbyjs.com//"/>
-  <updated>2013-05-10T11:15:49-07:00</updated>
+  <updated>2013-05-10T14:13:40-07:00</updated>
   <id>http://blog.derbyjs.com//</id>
   <author>
     <name><![CDATA[Nate Smith and Brian Noguchi]]></name>
@@ -25,7 +25,7 @@
 <div class="embed-video-container"><iframe src="http://www.youtube.com/embed/uDzME15UxVM "></iframe></div>
 
 
-<p>The new version is still undergoing rapid development and needs lots more testing, but you can watch our progress and play around with it by checking out the <a href="">Racer 0.5 branch</a> on GitHub. Derby has not yet been updated to work with the new Racer API, so you can&#8217;t use Racer 0.5 with Derby just yet.</p>
+<p>The new version is still undergoing rapid development and needs lots more testing, but you can watch our progress and play around with it by checking out the <a href="https://github.com/codeparty/racer/tree/0.5">Racer 0.5 branch</a> on GitHub. Derby has not yet been updated to work with the new Racer API, so you can&#8217;t use Racer 0.5 with Derby just yet.</p>
 ]]></content>
   </entry>
   
