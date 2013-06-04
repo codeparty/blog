@@ -4,7 +4,7 @@
   <title><![CDATA[Derby blog]]></title>
   <link href="http://blog.derbyjs.com//atom.xml" rel="self"/>
   <link href="http://blog.derbyjs.com//"/>
-  <updated>2013-05-10T14:13:40-07:00</updated>
+  <updated>2013-06-04T14:46:48-07:00</updated>
   <id>http://blog.derbyjs.com//</id>
   <author>
     <name><![CDATA[Nate Smith and Brian Noguchi]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Derby v0.5.0]]></title>
+    <link href="http://blog.derbyjs.com//2013/06/04/derby-v0-dot-5-0/"/>
+    <updated>2013-06-04T10:00:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2013/06/04/derby-v0-dot-5-0</id>
+    <content type="html"><![CDATA[<p>We&#8217;re happy to release the brand-spanking-new <a href="http://derbyjs.com/">Derby 0.5</a>! We&#8217;ve completely rewritten Racer, Derby&#8217;s realtime model layer on top of <a href="http://sharejs.org/">ShareJS</a>. Derby 0.5 is the first full-featured web app framework with all data synced via Operational Transformation. It is also the first framework like it to support horizontal scaling to multiple servers. And while not new, Derby is still the only realtime framework with full support for server and client rendering with no extra code.</p>
+
+<h2>OT&mdash;not just for Google anymore</h2>
+
+<p><a href="http://en.wikipedia.org/wiki/Operational_transformation">Operational Transformation (OT)</a> is the technology that powers Google Docs, Google Wave, and a handful of other cutting-edge web apps. With OT, multiple users can simultaneously make changes to the same data. They can add, remove, and edit items in a shared list or edit the same text. Any conflicts are resolved in a way that is reliably consistent and aims to preserve each user&#8217;s intention.</p>
+
+<p>Since all data in Derby uses OT, creating a realtime, collaborative text box is literally just <code>&lt;textarea&gt;{_page.text}&lt;/textarea&gt;</code>. Every textarea and input binding uses text OT by default, and every shared object can be collaboratively modified without any extra work.</p>
+
+<p>Now, any developer can put together a collaborative app that would have taken a large team months just a few years ago. To demonstrate, <a href="https://github.com/enjalot">Ian</a> and <a href="https://github.com/josephg">Joseph</a> (with CSS loving from <a href="https://github.com/srhnhm">Sarah</a> and <a href="https://github.com/andreasmb">Andreas</a>) hacked together a collaborative story writing game yesterday afternoon:</p>
+
+<h3><a href="http://stories.derbyjs.com/">Play it here!</a></h3>
+
+<p>Then, check out <a href="https://github.com/codeparty/multiplayernotepad">the source</a> and see how it was made:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/V0DOGXmaT3g "></iframe></div>
+
+
+<h2>Big steps toward production ready</h2>
+
+<p>Derby and Racer are still very young, and a great deal of bug hunting, benchmarking, and hardening is in order.</p>
+
+<p>However, this release is our first big step toward supporting production apps. With an appropriate proxy, Racer can now be used on multiple servers. It does require that clients are sticky to a given server, but it can quickly and gracefully reconnect to a new server if a connection is disrupted for any reason.</p>
+
+<p>Racer now also has powerful ways to clean up client memory in complex apps. As users navigate between client-rendered pages, Derby automatically unsubscribes from and unloads documents no longer being used. It also removes old event listeners and state from the previous page. This is done intelligently, so data from the previous page still being used on the new page isn&#8217;t re-fetched from the server.</p>
+
+<p>This code is hot off the keyboard, so it&#8217;s not for the faint of heart or IE. Expect bugs, and please help us to write tests!</p>
+
+<h2>For those of you already on the bandwagon</h2>
+
+<p>If you are already a Derby user, check out the <a href="http://blog.derbyjs.com//2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/">previous post</a> for information about migrating.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Migrating from Derby 0.3 to 0.5]]></title>
+    <link href="http://blog.derbyjs.com//2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/"/>
+    <updated>2013-06-04T09:59:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5</id>
+    <content type="html"><![CDATA[<p>From Derby 0.3 to 0.5, Racer has been completely rewritten. Please see <a href="http://derbyjs.com/">the documentationn</a> for more detailed information, but this post should help you get started with upgrading your app.</p>
+
+<h2>Migrating data in MongoDB</h2>
+
+<p>The first thing you&#8217;ll need to know is that Racer now requires keeping a journal of all operations, which is stored in Redis. If this journal gets out of sync with the data in MongoDB, it will likely break your app. The journal is the main source of what is the current state, and the database is used to store a cache of the data at a particular snapshot. When fetching documents, the snapshot stored in the DB provides more efficient retrieval and query support. To get started, you&#8217;ll need to install <a href="http://redis.io/download">Redis 2.6</a>, then initialize the journal with the data stored in Mongo.</p>
+
+<p>To make getting started with existing data a bit easier, we&#8217;ve written a <a href="https://github.com/share/igor">script to initialize the journal</a> in Redis based on a MongoDB database. There is also a <a href="https://github.com/share/godbox">tool to inspect your data</a> once it is initialized. For more info on using these tools, check out this video:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/FoOfNCJkAAA "></iframe></div>
+
+
+<h2>Conceptual differences</h2>
+
+<p>Overall, the core concepts in Racer remain mostly the same. However, we have made a few significant changes based on our experience with the previous version.</p>
+
+<ul>
+<li>Queries use the native database format. Racer 0.3 worked by defining a named queries on the server in advance. It used a special format that was then mapped to the database&#8217;s native query language. In Racer 0.5, queries are simply expressed in the native format of the database. Currently, we have implemented a MongoDB adapter, though it is possible to implement adapters for other databases as well.</li>
+<li>The previous concept of the &#8220;speculative model&#8221; has been removed, since all remotely synced data is updated via operational transformation. The speculative model was a frequent source of frustration, and operational transformation is a superior approach to solving eventual consistency.</li>
+<li>Private paths have been replaced with local and remote collections. Previously, private paths were any path containing a segment that started with an underscore. This allowed you to nest private paths underneath objects that were synced, but this was always buggy and complicated the implementation. In 0.5, every document is either local to a model or remote and synced back to the server and other clients. Local collection names (the very first path segment) start with an underscore (<code>_</code>) or dollar sign (<code>$</code>). All other collection names are remote. Collections starting with dollar sign are meant for internal use by Racer, Derby, and framework extensions. Your application should define local collections starting with underscore.</li>
+<li>Subscriptions are only available at the document level. To greatly simplify the implementation of subscriptions and fetches, models may only subscribe or fetch an entire document. For now, this is also a limitation of access control, and a given client may only be allowed or prevented from getting an entire document. Eventually, access control will support filtering certain fields from certain users, but this is not completed yet.</li>
+<li>Racer is now much simpler and more modular. It relies on ShareJS to handle remote data syncing, allows use of any connection layer instead of depending on Socket.IO, and has much less abstraction internally.</li>
+</ul>
+
+
+<h2>Specific API changes</h2>
+
+<ul>
+<li>Derby automatically cleans up data stored underneath <code>_page</code> immediately before each full page render on the client. This means that all private paths and refs should generally be moved to be underneath <code>_page</code></li>
+<li>It is no longer possible to store data at a root private path, and it must be stored within a local document, now most likely underneath <code>_page</code></li>
+<li>The MongoDB adapter adds <code>_v</code> and <code>_type</code> to keep track of internal state</li>
+<li>Documents may have a type other than an object at their root. If a document is an object, its MongoDB document will correspond directly to the document. If it is another type, the Racer document will be nested underneath <code>_data</code> in MongoDB. This means that it is now possible to use paths like <code>hello.message</code>, which would be stored as a document such as <code>{_id: 'message', _data: 'Some text', _v: 1, _type: 'http://sharejs.org/types/JSONv0'}</code> in the <code>hello</code> collection</li>
+<li>Document <code>id</code> properties are no longer mapped to and from the <code>_id</code> in Mongo</li>
+<li>Derby automatically unsubscribes from all queries and documents subscribed on the previous page unless resubscribed in the next route</li>
+<li><code>model.subscribe</code> and <code>model.fetch</code> only return an error argument. They no longer return scoped models corresponding to the inputs</li>
+<li>Model events no longer correspond directly to method names. The model events are now <code>change</code>, <code>insert</code>, <code>remove</code>, <code>move</code>, <code>stringRemove</code>, <code>stringInsert</code>, <code>load</code>, <code>unload</code>, and <code>all</code></li>
+<li>The path wildcard synatx for model events has changed slightly, and there are now both single segment wildcards (<code>*</code>) and multiple segment wildcards (<code>**</code>) at the end of a path</li>
+<li>Model functions are defined based on names rather than bundled as strings. Similar to view helper functions, model functions are now defined based on a name and initialized via <code>model.start()</code>. This means that model functions can use closure scope as expected</li>
+<li>Stores no longer have getter and setter methods. It is now necessary to create a model from a store to perform gets and sets</li>
+<li>The previous afterDb hooks have been removed</li>
+<li>Access control APIs have been changed</li>
+<li><code>model.ref</code> no longer has a third <code>key</code> argument</li>
+<li>Derby no longer generates and saves a file to disk for an app script bundle. Instead, the script is cached in memory and made available via middleware</li>
+<li>The server configuration options have changed substantially. See <a href="https://github.com/codeparty/derby-examples">the examples</a> or <a href="http://derbyjs.com/#create_an_app">generate a new project</a> for reference</li>
+</ul>
+
+
+<p>If you have other migration questions or tips, please leave them in the comments to this post.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Preview of Racer 0.5 and ShareJS for scalable Derby apps]]></title>

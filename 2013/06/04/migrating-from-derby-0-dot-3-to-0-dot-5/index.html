@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Migrating from Derby 0.3 to 0.5 - Derby blog</title>
+  <meta name="author" content="Nate Smith and Brian Noguchi">
+
+  
+  <meta name="description" content="From Derby 0.3 to 0.5, Racer has been completely rewritten. Please see the documentationn for more detailed information, but this post should help &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.derbyjs.com//2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Derby blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<style>
+  article > footer { padding-bottom: 0 }
+</style>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26625318-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Derby blog</a></h1>
+  
+    <h2>Full-stack MVC framework making it easy to write realtime, collaborative applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.derbyjs.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="http://derbyjs.com/">derbyjs.com</a></li>
+  <li><a href="/">Blog</a></li>
+  <li><a href="https://github.com/codeparty/derby">Github</a></li>
+  <li><a href="http://twitter.com/derbyjs">Twitter</a></li>
+  <li><a href="http://groups.google.com/group/derbyjs">Google Groups</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Migrating from Derby 0.3 to 0.5</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-04T09:59:00-07:00" pubdate data-updated="true">Jun 4<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>From Derby 0.3 to 0.5, Racer has been completely rewritten. Please see <a href="http://derbyjs.com/">the documentationn</a> for more detailed information, but this post should help you get started with upgrading your app.</p>
+
+<h2>Migrating data in MongoDB</h2>
+
+<p>The first thing you&#8217;ll need to know is that Racer now requires keeping a journal of all operations, which is stored in Redis. If this journal gets out of sync with the data in MongoDB, it will likely break your app. The journal is the main source of what is the current state, and the database is used to store a cache of the data at a particular snapshot. When fetching documents, the snapshot stored in the DB provides more efficient retrieval and query support. To get started, you&#8217;ll need to install <a href="http://redis.io/download">Redis 2.6</a>, then initialize the journal with the data stored in Mongo.</p>
+
+<p>To make getting started with existing data a bit easier, we&#8217;ve written a <a href="https://github.com/share/igor">script to initialize the journal</a> in Redis based on a MongoDB database. There is also a <a href="https://github.com/share/godbox">tool to inspect your data</a> once it is initialized. For more info on using these tools, check out this video:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/FoOfNCJkAAA "></iframe></div>
+
+
+<h2>Conceptual differences</h2>
+
+<p>Overall, the core concepts in Racer remain mostly the same. However, we have made a few significant changes based on our experience with the previous version.</p>
+
+<ul>
+<li>Queries use the native database format. Racer 0.3 worked by defining a named queries on the server in advance. It used a special format that was then mapped to the database&#8217;s native query language. In Racer 0.5, queries are simply expressed in the native format of the database. Currently, we have implemented a MongoDB adapter, though it is possible to implement adapters for other databases as well.</li>
+<li>The previous concept of the &#8220;speculative model&#8221; has been removed, since all remotely synced data is updated via operational transformation. The speculative model was a frequent source of frustration, and operational transformation is a superior approach to solving eventual consistency.</li>
+<li>Private paths have been replaced with local and remote collections. Previously, private paths were any path containing a segment that started with an underscore. This allowed you to nest private paths underneath objects that were synced, but this was always buggy and complicated the implementation. In 0.5, every document is either local to a model or remote and synced back to the server and other clients. Local collection names (the very first path segment) start with an underscore (<code>_</code>) or dollar sign (<code>$</code>). All other collection names are remote. Collections starting with dollar sign are meant for internal use by Racer, Derby, and framework extensions. Your application should define local collections starting with underscore.</li>
+<li>Subscriptions are only available at the document level. To greatly simplify the implementation of subscriptions and fetches, models may only subscribe or fetch an entire document. For now, this is also a limitation of access control, and a given client may only be allowed or prevented from getting an entire document. Eventually, access control will support filtering certain fields from certain users, but this is not completed yet.</li>
+<li>Racer is now much simpler and more modular. It relies on ShareJS to handle remote data syncing, allows use of any connection layer instead of depending on Socket.IO, and has much less abstraction internally.</li>
+</ul>
+
+
+<h2>Specific API changes</h2>
+
+<ul>
+<li>Derby automatically cleans up data stored underneath <code>_page</code> immediately before each full page render on the client. This means that all private paths and refs should generally be moved to be underneath <code>_page</code></li>
+<li>It is no longer possible to store data at a root private path, and it must be stored within a local document, now most likely underneath <code>_page</code></li>
+<li>The MongoDB adapter adds <code>_v</code> and <code>_type</code> to keep track of internal state</li>
+<li>Documents may have a type other than an object at their root. If a document is an object, its MongoDB document will correspond directly to the document. If it is another type, the Racer document will be nested underneath <code>_data</code> in MongoDB. This means that it is now possible to use paths like <code>hello.message</code>, which would be stored as a document such as <code>{_id: 'message', _data: 'Some text', _v: 1, _type: 'http://sharejs.org/types/JSONv0'}</code> in the <code>hello</code> collection</li>
+<li>Document <code>id</code> properties are no longer mapped to and from the <code>_id</code> in Mongo</li>
+<li>Derby automatically unsubscribes from all queries and documents subscribed on the previous page unless resubscribed in the next route</li>
+<li><code>model.subscribe</code> and <code>model.fetch</code> only return an error argument. They no longer return scoped models corresponding to the inputs</li>
+<li>Model events no longer correspond directly to method names. The model events are now <code>change</code>, <code>insert</code>, <code>remove</code>, <code>move</code>, <code>stringRemove</code>, <code>stringInsert</code>, <code>load</code>, <code>unload</code>, and <code>all</code></li>
+<li>The path wildcard synatx for model events has changed slightly, and there are now both single segment wildcards (<code>*</code>) and multiple segment wildcards (<code>**</code>) at the end of a path</li>
+<li>Model functions are defined based on names rather than bundled as strings. Similar to view helper functions, model functions are now defined based on a name and initialized via <code>model.start()</code>. This means that model functions can use closure scope as expected</li>
+<li>Stores no longer have getter and setter methods. It is now necessary to create a model from a store to perform gets and sets</li>
+<li>The previous afterDb hooks have been removed</li>
+<li>Access control APIs have been changed</li>
+<li><code>model.ref</code> no longer has a third <code>key</code> argument</li>
+<li>Derby no longer generates and saves a file to disk for an app script bundle. Instead, the script is cached in memory and made available via middleware</li>
+<li>The server configuration options have changed substantially. See <a href="https://github.com/codeparty/derby-examples">the examples</a> or <a href="http://derbyjs.com/#create_an_app">generate a new project</a> for reference</li>
+</ul>
+
+
+<p>If you have other migration questions or tips, please leave them in the comments to this post.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nate Smith and Brian Noguchi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-04T09:59:00-07:00" pubdate data-updated="true">Jun 4<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.derbyjs.com//2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/" data-via="derbyjs" data-counturl="http://blog.derbyjs.com//2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2013/05/10/preview-of-racer-0-dot-5-and-sharejs-for-scalable-derby-apps/" title="Previous Post: Preview of Racer 0.5 and ShareJS for scalable Derby apps">&laquo; Preview of Racer 0.5 and ShareJS for scalable Derby apps</a>
+      
+      
+        <a class="basic-alignment right" href="/2013/06/04/derby-v0-dot-5-0/" title="Next Post: Derby v0.5.0">Derby v0.5.0 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2013/06/04/derby-v0-dot-5-0/">Derby v0.5.0</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/">Migrating from Derby 0.3 to 0.5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/05/10/preview-of-racer-0-dot-5-and-sharejs-for-scalable-derby-apps/">Preview of Racer 0.5 and ShareJS for scalable Derby apps</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2013/03/26/getting-derby-ready-for-prime-time/">Getting Derby ready for prime time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/10/03/now-hiring-join-the-derby-core-team-at-lever/">Now hiring: Join the Derby core team at Lever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("derbyjs", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/derbyjs" class="twitter-follow-button" data-show-count="false">Follow @derbyjs</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Nate Smith and Brian Noguchi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'derbyblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.derbyjs.com//2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/';
+        var disqus_url = 'http://blog.derbyjs.com//2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

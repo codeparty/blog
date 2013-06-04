@@ -4,7 +4,7 @@
   <title><![CDATA[Category: release | Derby blog]]></title>
   <link href="http://blog.derbyjs.com///categories/release/atom.xml" rel="self"/>
   <link href="http://blog.derbyjs.com//"/>
-  <updated>2013-05-10T14:13:40-07:00</updated>
+  <updated>2013-06-04T14:46:48-07:00</updated>
   <id>http://blog.derbyjs.com//</id>
   <author>
     <name><![CDATA[Nate Smith and Brian Noguchi]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Derby v0.5.0]]></title>
+    <link href="http://blog.derbyjs.com//2013/06/04/derby-v0-dot-5-0/"/>
+    <updated>2013-06-04T10:00:00-07:00</updated>
+    <id>http://blog.derbyjs.com//2013/06/04/derby-v0-dot-5-0</id>
+    <content type="html"><![CDATA[<p>We're happy to release the brand-spanking-new <a href="http://derbyjs.com/">Derby 0.5</a>! We've completely rewritten Racer, Derby's realtime model layer on top of <a href="http://sharejs.org/">ShareJS</a>. Derby 0.5 is the first full-featured web app framework with all data synced via Operational Transformation. It is also the first framework like it to support horizontal scaling to multiple servers. And while not new, Derby is still the only realtime framework with full support for server and client rendering with no extra code.</p>
+
+<h2>OT&mdash;not just for Google anymore</h2>
+
+<p><a href="http://en.wikipedia.org/wiki/Operational_transformation">Operational Transformation (OT)</a> is the technology that powers Google Docs, Google Wave, and a handful of other cutting-edge web apps. With OT, multiple users can simultaneously make changes to the same data. They can add, remove, and edit items in a shared list or edit the same text. Any conflicts are resolved in a way that is reliably consistent and aims to preserve each user's intention.</p>
+
+<p>Since all data in Derby uses OT, creating a realtime, collaborative text box is literally just <code>&lt;textarea&gt;{_page.text}&lt;/textarea&gt;</code>. Every textarea and input binding uses text OT by default, and every shared object can be collaboratively modified without any extra work.</p>
+
+<p>Now, any developer can put together a collaborative app that would have taken a large team months just a few years ago. To demonstrate, <a href="https://github.com/enjalot">Ian</a> and <a href="https://github.com/josephg">Joseph</a> (with CSS loving from <a href="https://github.com/srhnhm">Sarah</a> and <a href="https://github.com/andreasmb">Andreas</a>) hacked together a collaborative story writing game yesterday afternoon:</p>
+
+<h3><a href="http://stories.derbyjs.com/">Play it here!</a></h3>
+
+<p>Then, check out <a href="https://github.com/codeparty/multiplayernotepad">the source</a> and see how it was made:</p>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/V0DOGXmaT3g "></iframe></div></p>
+
+<h2>Big steps toward production ready</h2>
+
+<p>Derby and Racer are still very young, and a great deal of bug hunting, benchmarking, and hardening is in order.</p>
+
+<p>However, this release is our first big step toward supporting production apps. With an appropriate proxy, Racer can now be used on multiple servers. It does require that clients are sticky to a given server, but it can quickly and gracefully reconnect to a new server if a connection is disrupted for any reason.</p>
+
+<p>Racer now also has powerful ways to clean up client memory in complex apps. As users navigate between client-rendered pages, Derby automatically unsubscribes from and unloads documents no longer being used. It also removes old event listeners and state from the previous page. This is done intelligently, so data from the previous page still being used on the new page isn't re-fetched from the server.</p>
+
+<p>This code is hot off the keyboard, so it's not for the faint of heart or IE. Expect bugs, and please help us to write tests!</p>
+
+<h2>For those of you already on the bandwagon</h2>
+
+<p>If you are already a Derby user, check out the <a href="/2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/">previous post</a> for information about migrating.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Derby v0.3.1]]></title>
