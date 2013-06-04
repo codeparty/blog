@@ -18,7 +18,7 @@ Now, any developer can put together a collaborative app that would have taken a 
 
 ### [Play it here!](http://stories.derbyjs.com/)
 
-Then, check out [the source](https://github.com/josephg/multiplayernotepad) and see how it was made:
+Then, check out [the source](https://github.com/codeparty/multiplayernotepad) and see how it was made:
 
 {% youtube V0DOGXmaT3g %}
 
