@@ -1,0 +1,37 @@
+---
+layout: post
+title: "Derby v0.5.0"
+date: 2013-06-04 10:00
+comments: true
+categories: release
+---
+
+We're happy to release the brand-spanking-new [Derby 0.5](http://derbyjs.com/)! We've completely rewritten Racer, Derby's realtime model layer on top of [ShareJS](http://sharejs.org/). Derby 0.5 is the first full-featured web app framework with all data synced via Operational Transformation. It is also the first framework like it to support horizontal scaling to multiple servers. And while not new, Derby is still the only realtime framework with full support for server and client rendering with no extra code.
+
+## OT&mdash;not just for Google anymore
+
+[Operational Transformation (OT)](http://en.wikipedia.org/wiki/Operational_transformation) is the technology that powers Google Docs, Google Wave, and a handful of other cutting-edge web apps. With OT, multiple users can simultaneously make changes to the same data. They can add, remove, and edit items in a shared list or edit the same text. Any conflicts are resolved in a way that is reliably consistent and aims to preserve each user's intention.
+
+Since all data in Derby uses OT, creating a realtime, collaborative text box is literally just `<textarea>{_page.text}</textarea>`. Every textarea and input binding uses text OT by default, and every shared object can be collaboratively modified without any extra work.
+
+Now, any developer can put together a collaborative app that would have taken a large team months just a few years ago. To demonstrate, [Ian](https://github.com/enjalot) and [Joseph](https://github.com/josephg) (with CSS loving from [Sarah](https://github.com/srhnhm) and [Andreas](https://github.com/andreasmb)) hacked together a collaborative story writing game yesterday afternoon:
+
+### [Play it here!](http://stories.derbyjs.com/)
+
+Then, check out [the source](https://github.com/josephg/multiplayernotepad) and see how it was made:
+
+{% youtube V0DOGXmaT3g %}
+
+## Big steps toward production ready
+
+Derby and Racer are still very young, and a great deal of bug hunting, benchmarking, and hardening is in order.
+
+However, this release is our first big step toward supporting production apps. With an appropriate proxy, Racer can now be used on multiple servers. It does require that clients are sticky to a given server, but it can quickly and gracefully reconnect to a new server if a connection is disrupted for any reason.
+
+Racer now also has powerful ways to clean up client memory in complex apps. As users navigate between client-rendered pages, Derby automatically unsubscribes from and unloads documents no longer being used. It also removes old event listeners and state from the previous page. This is done intelligently, so data from the previous page still being used on the new page isn't re-fetched from the server.
+
+This code is hot off the keyboard, so it's not for the faint of heart or IE. Expect bugs, and please help us to write tests!
+
+## For those of you already on the bandwagon
+
+If you are already a Derby user, check out the [previous post](/2013/06/04/migrating-from-derby-0-dot-3-to-0-dot-5/) for information about migrating.
